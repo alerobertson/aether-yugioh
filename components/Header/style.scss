@@ -1,0 +1,17 @@
+.header {
+    background-color: black;
+    color: white;
+    &_logo {
+        &_wrap {
+            align-self: center;
+        }
+        img {
+            max-height: 3rem;
+            padding: 1rem 0;
+            vertical-align: middle;
+        }
+    }
+    nav {
+        align-self: center;
+    }
+}

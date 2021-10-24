@@ -1,0 +1,12 @@
+.button {
+    border: 1px solid $bot-blue;
+    color: $bot-blue;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    transition: all 0.25s ease-in-out;
+    &:hover {
+        text-decoration: none;
+        background-color: $bot-blue;
+        color: white;
+    }
+}

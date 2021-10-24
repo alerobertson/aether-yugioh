@@ -1,0 +1,70 @@
+@import '~@style-variables';
+@import '~@style-mixins';
+
+html {
+    font-size: 10px;
+    @include layout-mobile {
+        font-size: 7.5px;
+    }
+}
+
+body {
+    font-family: $font--main;
+    margin: 0;
+    font-size: 1.6rem;
+    min-height: 100vh;
+}
+
+.header, .main, .footer {
+    &_container {
+        &--inner {
+            max-width: 1440px;
+            padding: 0 2rem;
+            margin: auto;
+            box-sizing: border-box;
+        }
+    }
+}
+
+// Headings
+@include headings {
+    font-weight: bold;
+}
+h1, .h1 {
+    font-size: 3.2rem;
+}
+h2, .h2 {
+    font-size: 2.4rem;
+}
+h3, .h3 {
+    font-size: 1.872rem;
+}
+h4, .h4 {
+    font-size: 1.6rem;
+}
+h5, .h5 {
+    font-size: 1.328rem;
+}
+h6, .h6 {
+    font-size: 1.072rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// Panes
+.pane {
+    &--header {
+        padding: 2rem 1rem;
+        background-color: $dark;
+        color: $white;
+    }
+}
+.component {
+
+}

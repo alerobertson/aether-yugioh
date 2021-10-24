@@ -1,0 +1,32 @@
+@import '~@style-mixins';
+@import '~@style-variables';
+
+nav {
+    max-width: 20rem;
+    padding: 1rem 0;
+    margin-left: auto;
+    ul {
+        padding-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+    li {
+        list-style: none;
+        &:not(:first-child) {
+            margin-left: 2rem;
+        }
+        a {
+            &:hover {
+                border-bottom: 2px solid $bot-blue;
+                text-decoration: none;
+            }
+        }
+        &.active {
+            a {
+                border-bottom: 2px solid $bot-blue;
+            }
+        }
+    }
+}

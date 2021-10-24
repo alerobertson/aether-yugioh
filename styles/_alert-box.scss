@@ -1,0 +1,24 @@
+.alert-box {
+    background-color: $bot-light-blue;
+    padding: 2rem;
+    &_wrap {
+        max-width: 60rem;
+        margin: 3rem auto;
+        text-align: center;
+    }
+    @include headings {
+        margin-top: 0;
+        margin-bottom: 0;
+        position: relative;
+        display: inline-block;
+        &:after {
+            position: relative;
+            content: "";
+            display: block;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background-color: $bot-blue;
+        }
+    }
+}

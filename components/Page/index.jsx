@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.scss'
-import { Authorized, Home, Login, SignOut, Box } from '@pages';
+import { Authorized, Home, Login, SignOut, Box, DeckBuilder } from '@pages';
 import {
     BrowserRouter as Router,
     Switch,
@@ -26,6 +26,9 @@ class Page extends React.Component {
                 </Route>
                 <Route path="/box">
                     <Box />
+                </Route>
+                <Route path="/decks">
+                    <DeckBuilder />
                 </Route>
             </Switch>
         )

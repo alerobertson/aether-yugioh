@@ -45,3 +45,14 @@ export function getCards(token) {
         return cards
     })
 }
+
+export function getPacks(token) {
+    let headers = {
+        "auth_token": token
+    }
+    return axios.get(config.api_endpoint + '/yugioh/my-packs/', { headers: headers }).then((response) => {
+        let packs = response.data
+
+        return packs
+    })
+}

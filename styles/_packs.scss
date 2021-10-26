@@ -1,0 +1,14 @@
+.packs-list {
+    max-width: 500px;
+    margin: auto;
+    .pack {
+        width: calc(100% / 3);
+        &_image {
+            display: block;
+            width: 100%;
+        }
+        &_wrap {
+            padding: 1rem;
+        }
+    }
+}

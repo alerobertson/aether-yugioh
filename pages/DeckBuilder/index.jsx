@@ -35,7 +35,6 @@ class DeckBuilder extends React.Component {
     onSortChangeDirection(event) {
         let select = event.target
         let direction = select.value
-        console.log(direction)
         this.setState({
             sort_direction: direction == "true" ? true : false
         })
@@ -136,6 +135,7 @@ class DeckBuilder extends React.Component {
     }
 
     sortCards(cards) {
+        cards = sortBy(cards, 'name', this.state.sort_direction)
         return sortBy(cards, this.state.sort_type, this.state.sort_direction)
     }
 
@@ -230,8 +230,8 @@ class DeckBuilder extends React.Component {
                         <div className="card-box_wrap">
                             <div className="card-box_filter_wrap">
                                 <div className="card-box_filter">
-                                    <select onChange={this.onSortChangeType.bind(this)} className="card-box_filter_item sorting-type">
-                                        <option selected value="id">Date Created</option>
+                                    <select defaultValue="id" onChange={this.onSortChangeType.bind(this)} className="card-box_filter_item sorting-type">
+                                        <option value="id">Date Created</option>
                                         <option value="name">Name</option>
                                         <option value="type">Card Type</option>
                                         <option value="rarity_index">Rarity</option>
@@ -240,8 +240,8 @@ class DeckBuilder extends React.Component {
                                         <option value="attack">Attack</option>
                                         <option value="defense">Defense</option>
                                     </select>
-                                    <select onChange={this.onSortChangeDirection.bind(this)} className="card-box_filter_item sorting-direction">
-                                        <option selected value="false">Descending</option>
+                                    <select defaultValue="false" onChange={this.onSortChangeDirection.bind(this)} className="card-box_filter_item sorting-direction">
+                                        <option value="false">Descending</option>
                                         <option value="true">Ascending</option>
                                     </select>
                                 </div>

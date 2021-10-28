@@ -142,11 +142,57 @@ class DeckBuilder extends React.Component {
     componentDidMount() {
         let token = localStorage.getItem("token")
         getCards(token).then((cards) => {
-            console.log(cards)
-            this.setState({
-                cards: cards,
-                box_cards: cards
-            })
+            let deck = localStorage.getObject("deck")
+            let database_cards = cards
+            let valid = true
+            if(deck) {
+                for (let i = 0; i < deck.length; i++) {
+                    let deck_card = deck[i];
+                    let index = cards.findIndex(c => c.id == deck_card.id);
+                    if(index < 0) {
+                        valid = false
+                        break
+                    }
+                    else {
+                        cards.splice(index, 1)
+                    }
+                }
+            }
+            else {
+                deck = []
+            }
+
+            let extra_deck = localStorage.getObject("extra_deck")
+            if(extra_deck) {
+                for (let i = 0; i < extra_deck.length; i++) {
+                    let extra_card = extra_deck[i];
+                    let index = cards.findIndex(c => c.id == extra_card.id);
+                    if(index < 0) {
+                        valid = false
+                        break
+                    }
+                    else {
+                        cards.splice(index, 1)
+                    }
+                }
+            }
+            else {
+                extra_deck = []
+            }
+
+            if(valid) {
+                this.setState({
+                    cards: database_cards,
+                    box_cards: cards,
+                    deck_cards: deck,
+                    extra_cards: extra_deck
+                })
+            }
+            else {
+                alert('The deck in browser memory cannot be built with the cards you own. It has been removed.')
+                localStorage.removeItem("deck")
+                localStorage.removeItem("extra_deck")
+            }
         })
     }
 
@@ -175,6 +221,12 @@ class DeckBuilder extends React.Component {
         element.download = "aether_deck.ydk";
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
+    }
+
+    saveDeck() {
+        localStorage.setObject("deck", this.state.deck_cards)
+        localStorage.setObject("extra_deck", this.state.extra_cards)
+        alert('Deck saved to browser.')
     }
 
     render() {
@@ -212,9 +264,12 @@ class DeckBuilder extends React.Component {
                                 </div>
                             </div>
                             <div className="options_wrap">
-                                <div className="options">
+                                <div className="options flex flex--space-between flex--wrap">
                                     <a className="button" onClick={this.exportDeck.bind(this)}>
                                         Export .ydk
+                                    </a>
+                                    <a className="button" onClick={this.saveDeck.bind(this)}>
+                                        Save to Browser
                                     </a>
                                 </div>
                             </div>

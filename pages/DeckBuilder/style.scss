@@ -39,11 +39,18 @@
         }
     }
     .options {
+        max-width: 300px;
         &_wrap {
             margin-top: 2rem;
         }
         a {
             cursor: pointer;
+        }
+        .button {
+            width: 200px;
+            margin-top: 10px;
+            box-sizing:border-box;
+            display: block;
         }
     }
 }

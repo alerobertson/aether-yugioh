@@ -16,6 +16,7 @@ function sanitizeCards(cards) {
         card.rarity_index = rarityIndex(card.rarity)
         card.attack = convertToInt(card.attack)
         card.defense = convertToInt(card.defense)
+        card.image_url = `${config.api_endpoint}/yugioh/card/${card.code}?fe=${card.first_edition}`
         return card
     })
 }

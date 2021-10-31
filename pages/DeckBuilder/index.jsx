@@ -15,7 +15,7 @@ class DeckBuilder extends React.Component {
             box_cards: [],
             sort_type: 'id',
             sort_direction: false,
-            hover_card: 'BACK'
+            hover_card: apiConfig.api_endpoint + '/yugioh/card/BACK'
         }
     }
 
@@ -42,9 +42,9 @@ class DeckBuilder extends React.Component {
 
     onCardHover(event) {
         let card = event.target.closest('.card');
-        let code = card.getAttribute("card_code")
+        let src = card.querySelector('img').getAttribute('src')
         this.setState({
-            hover_card: code
+            hover_card: src
         })
     }
 
@@ -235,21 +235,21 @@ class DeckBuilder extends React.Component {
         let deck_card_template = this.state.deck_cards.map((card) =>
             <div onClick={this.onDeckCardClick.bind(this)} card_id={card.id} card_code={card.code} onMouseEnter={this.onCardHover.bind(this)} className={`card ${card.rarity}`} key={card.id.toString()} >
                 <div className="card_effect"></div>
-                <img src={apiConfig.api_endpoint + "/yugioh/card/" + card.code} />
+                <img alt={card.name} src={card.image_url} />
             </div>
         )
 
         let extra_card_template = this.state.extra_cards.map((card) =>
             <div onClick={this.onExtraDeckCardClick.bind(this)} card_id={card.id} card_code={card.code} onMouseEnter={this.onCardHover.bind(this)} className={`card ${card.rarity}`} key={card.id.toString()} >
                 <div className="card_effect"></div>
-                <img src={apiConfig.api_endpoint + "/yugioh/card/" + card.code} />
+                <img alt={card.name} src={card.image_url} />
             </div>
         )
 
         let box_card_template = box_cards.map((card) =>
             <div onClick={this.onBoxCardClick.bind(this)} card_id={card.id} card_code={card.code} card_monster_type={card.monster_type} onMouseEnter={this.onCardHover.bind(this)} className={`card ${card.rarity}`} key={card.id.toString()} >
                 <div className="card_effect"></div>
-                <img src={apiConfig.api_endpoint + "/yugioh/card/" + card.code} />
+                <img alt={card.name} src={card.image_url} />
             </div>
         )
 
@@ -260,7 +260,7 @@ class DeckBuilder extends React.Component {
                         <div className="preview-box_wrap">
                             <div className="preview-box">
                                 <div className="card">
-                                    <img src={apiConfig.api_endpoint + "/yugioh/card/" + this.state.hover_card} />
+                                    <img src={this.state.hover_card} />
                                 </div>
                             </div>
                             <div className="options_wrap">

@@ -31,9 +31,9 @@ class Box extends React.Component {
     render() {
         let card_template = this.state.cards.map((card) =>
             <div className={`card ${card.rarity}`} key={card.id.toString()} >
-                <a data-fancybox="gallery" className="card_inspect" href={apiConfig.api_endpoint + "/yugioh/card/" + card.code}>
+                <a data-fancybox="gallery" className="card_inspect" href={card.image_url}>
                     <div className="card_effect"></div>
-                    <img src={apiConfig.api_endpoint + "/yugioh/card/" + card.code} />
+                    <img src={card.image_url} />
                 </a>
             </div>
         )

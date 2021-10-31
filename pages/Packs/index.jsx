@@ -34,7 +34,7 @@ class Packs extends React.Component {
             <div key={pack.code} className="pack">
                 <div className="pack_wrap">
                     <a href={`${apiConfig.api_endpoint}/yugioh/booster/${pack.code}`}>
-                        <img className="pack_image" src={apiConfig.api_endpoint + "/yugioh/booster-art/LOB"} />
+                        <img className="pack_image" src={apiConfig.api_endpoint + "/yugioh/booster-art/" + pack.set_name} />
                     </a>
                 </div>
             </div>

@@ -21,4 +21,12 @@
             background-color: $bot-blue;
         }
     }
+    &--error {
+        background-color: $light-red;
+        @include headings {
+            &:after {
+                background-color: black;
+            }
+        }
+    }
 }

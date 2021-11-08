@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.scss'
-import { getCards, sortBy } from '@api-operations'
+import { getMyCards, sortBy } from '@api-operations'
 import { Fancybox } from '@components'
 import apiConfig from '../../operations/config.json'
 import { withRouter, Link } from "react-router-dom";
@@ -141,7 +141,7 @@ class DeckBuilder extends React.Component {
 
     componentDidMount() {
         let token = localStorage.getItem("token")
-        getCards(token).then((cards) => {
+        getMyCards(token).then((cards) => {
             let deck = localStorage.getObject("deck")
             let database_cards = cards
             let valid = true

@@ -31,6 +31,11 @@ class Navigation extends React.Component {
                         <Link to="/">Home</Link>
                     </li>
                     {hasToken &&
+                        <li className={path == "/trade" ? "active" : ""}>
+                            <Link to="/trade">Trade</Link>
+                        </li>
+                    }
+                    {hasToken &&
                         <li className={path == "/packs" ? "active" : ""}>
                             <Link to="/packs">Packs</Link>
                         </li>

@@ -1,0 +1,14 @@
+.duelist-list {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    &_item {
+        margin: 0 2rem;
+        a {
+            display: block;
+        }
+        img {
+            display: block;
+        }
+    }
+}

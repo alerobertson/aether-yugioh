@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.scss'
-import { getCards } from '@api-operations'
+import { getMyCards } from '@api-operations'
 import { Fancybox } from '@components'
 import apiConfig from '../../operations/config.json'
 import { withRouter, Link } from "react-router-dom";
@@ -20,7 +20,7 @@ class Box extends React.Component {
 
     componentDidMount() {
         let token = localStorage.getItem("token")
-        getCards(token).then((cards) => {
+        getMyCards(token).then((cards) => {
             console.log(cards)
             this.setState({
                 cards: cards

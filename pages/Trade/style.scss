@@ -1,0 +1,134 @@
+.page--trade {
+    .card-list {
+        margin: 0 2rem;
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+        .card {
+            width: calc(100% / 4);
+        }
+        &_wrap {
+            display: flex;
+            > .card-list {
+                width: 49%;
+                align-content: flex-start;
+                height: 80vh;
+                overflow-y: scroll;
+            }
+        }
+    }
+    .offer-box {
+        margin: 0 2rem;
+        background-color: #2f3136;
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+        &_wrap {
+            margin: 1rem 0 3rem;
+            display: flex;
+            > .offer-box {
+                width: 49%;
+                align-content: flex-start;
+                height: 30rem;
+                overflow-y: scroll;
+            }
+        }
+    }
+    .offer-list {
+        .offer {
+            &_box {
+                display: flex;
+                flex-wrap: wrap;
+                .card {
+                    width: calc(100% / 4);
+                    cursor: default;
+                }
+            }
+            &_banner {
+                position: relative;
+            }
+            &_options {
+                position: absolute;
+                right: 0;
+                top: 0;
+                display: flex;
+                .option {
+                    width: 50px;
+                    height: 50px;
+                    display: block;
+                    line-height: 50px;
+                    font-size: 25px;
+                    font-weight: bold;
+                    text-align: center;
+                    &.cancel {
+                        background-color: #ff0800;
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                    &.decline {
+                        background-color: #ff0800;
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                    &.accept {
+                        background-color: #228B22;
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                    &:hover {
+                        text-decoration: none;
+                        transition: all 0.25s ease-in-out;
+                    }
+                }
+            }
+            &.sent {
+                .offer {
+                    &_target {
+                        .offer_options {
+                            display: none;
+                        }
+                    }
+                }
+                .offer_options {
+                    .option {
+                        &.decline,
+                        &.accept {
+                            display: none;
+                        }
+                    }
+                }
+            }
+            &.received {
+                .offer {
+                    &_owner {
+                        .offer_options {
+                            display: none;
+                        }
+                    }
+                }
+                .offer_options {
+                    .option {
+                        &.cancel {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .offer-controls {
+        text-align: center;
+    }
+    .card {
+        cursor: pointer;
+    }
+}

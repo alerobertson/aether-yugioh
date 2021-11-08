@@ -1,0 +1,42 @@
+.offer {
+    display: flex;
+    justify-content: space-between;
+    &_name {
+        text-align: center;
+    }
+    &_wrap {
+        max-width: 1000px;
+        margin: 2rem auto;
+    }
+    >div {
+        width: 50%;
+    }
+    &_target {
+        border: 1px solid #2f3136;
+        &_wrap {
+            padding: 1rem;
+        }
+    }
+    &_owner {
+        border: 1px solid #2f3136;
+        &_wrap {
+            padding: 1rem;
+        }
+    }
+    &_avatar {
+        img {
+            display: block;
+            margin: auto;
+        }
+    }
+    &_banner {
+        background-color: #2f3136;
+        padding: 1rem;
+        color: white;
+        .discord_icon {
+            height: 32px;
+            width: 32px;
+            border-radius: 100%;
+        }
+    }
+}

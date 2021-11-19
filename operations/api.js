@@ -141,3 +141,14 @@ export function declineOffer(token, offer_id) {
         return response.data
     })
 }
+
+export function redeemCode(token, code) {
+    let headers = {
+        "auth_token": token
+    }
+    return axios.get(config.api_endpoint + '/yugioh/redeem/' + code, { headers: headers }).then((response) => {
+        return true
+    }, (error) => {
+        return false
+    })
+}

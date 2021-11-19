@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.scss'
-import { Authorized, Home, Login, SignOut, Box, DeckBuilder, Packs, Trade } from '@pages';
+import { Authorized, Home, Login, SignOut, Box, DeckBuilder, Packs, Trade, Redeem } from '@pages';
 import {
     BrowserRouter as Router,
     Switch,
@@ -23,6 +23,9 @@ class Page extends React.Component {
                 </Route>
                 <Route path="/authorized">
                     <Authorized />
+                </Route>
+                <Route path="/redeem">
+                    <Redeem />
                 </Route>
                 <Route path="/sign-out">
                     <SignOut />

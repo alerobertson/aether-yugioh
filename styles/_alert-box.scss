@@ -28,5 +28,13 @@
                 background-color: black;
             }
         }
+        .button {
+            border-color: black;
+            color: black;
+            &:hover {
+                background-color: black;
+                color: $light-red;
+            }
+        }
     }
 }

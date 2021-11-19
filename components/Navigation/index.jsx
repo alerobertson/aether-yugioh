@@ -27,9 +27,9 @@ class Navigation extends React.Component {
         return (
             <nav>
                 <ul>
-                    <li className={path == "/" ? "active" : ""} >
+                    {/* <li className={path == "/" ? "active" : ""} >
                         <Link to="/">Home</Link>
-                    </li>
+                    </li> */}
                     {hasToken &&
                         <li className={path == "/trade" ? "active" : ""}>
                             <Link to="/trade">Trade</Link>
@@ -38,6 +38,11 @@ class Navigation extends React.Component {
                     {hasToken &&
                         <li className={path == "/packs" ? "active" : ""}>
                             <Link to="/packs">Packs</Link>
+                        </li>
+                    }
+                    {hasToken &&
+                        <li className={path == "/redeem" ? "active" : ""}>
+                            <Link to="/redeem">Redeem</Link>
                         </li>
                     }
                     {!hasToken &&

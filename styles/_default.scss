@@ -26,6 +26,13 @@ body {
     }
 }
 
+input {
+    height: 34px;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+}
+
 // Headings
 @include headings {
     font-weight: bold;

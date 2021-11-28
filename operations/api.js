@@ -152,3 +152,37 @@ export function redeemCode(token, code) {
         return false
     })
 }
+
+export function getCardSets() {
+    return axios.get(config.api_endpoint + '/yugioh/sets/').then((response) => {
+        let sets = response.data
+        return sets.map((set) => {
+            set.cards = sanitizeCards(set.cards)
+            return set
+        })
+    }, (error) => {
+        return false
+    })
+}
+
+export function disenchantCard(token, card_id) {
+    let headers = {
+        "auth_token": token
+    }
+    return axios.get(config.api_endpoint + '/yugioh/disenchant/' + card_id, { headers: headers }).then((response) => {
+        return true
+    }, (error) => {
+        return false
+    })
+}
+
+export function enchantCard(token, card_code) {
+    let headers = {
+        "auth_token": token
+    }
+    return axios.get(config.api_endpoint + '/yugioh/enchant/' + card_code, { headers: headers }).then((response) => {
+        return true
+    }, (error) => {
+        return false
+    })
+}

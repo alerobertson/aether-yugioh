@@ -1,11 +1,16 @@
 import React from 'react'
 import { Navigation } from '@components'
+import { getMe } from '@api-operations'
 import logo from '@images/aetherbot-dp.png'
+import gem_icon from '@images/gem.png'
 import './style.scss'
 
 class Header extends React.Component {
     constructor(props) {
         super(props)
+    }
+
+    componentDidMount() {
     }
 
     render() {

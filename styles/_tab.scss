@@ -1,0 +1,13 @@
+.tab {
+    &_wrap {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    &.button {
+        &.active {
+            text-decoration: none;
+            background-color: $bot-blue;
+            color: white; 
+        }
+    }
+}

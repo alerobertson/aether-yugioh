@@ -1,0 +1,75 @@
+#modal {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.5);
+    &.active {
+        display: block;
+        opacity: 1;
+    }
+    .modal {
+        max-width: 90rem;
+        padding: 0 2rem;
+        margin: auto;
+        top: 20%;
+        position: relative;
+        &_content {
+            padding: 1rem;
+        }
+        .card {
+            width: 40rem;
+            margin: auto;
+            -webkit-box-shadow: -1px 0px 15px 10px rgba(0,0,0,0.1); 
+            box-shadow: -1px 0px 15px 10px rgba(0,0,0,0.1);
+        }
+    }
+}
+
+.craft-card {
+    &_wrap {
+        display: flex;
+        justify-content: center;
+    }
+    &_option {
+        position: absolute;
+        width: 10rem;
+        height: 10rem;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        color: white;
+        font-weight: bold;
+        font-size: 2rem;
+        border: 1px solid black;
+        .gem-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        &.disenchant {
+            left: 2rem;
+            top: 6rem;
+            background-color: $red;
+            &:hover {
+                background-color: $dark-red;
+            }
+        }
+        &.enchant {
+            right: 2rem;
+            top: 6rem;
+            background-color: $green;
+            &:hover {
+                background-color: $dark-green;
+            }
+        }
+        p {
+            margin: 0;
+        }
+    }
+}

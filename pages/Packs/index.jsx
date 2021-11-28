@@ -17,6 +17,14 @@ class Packs extends React.Component {
         return token
     }
 
+    onClickPack(code, event) {
+        let packs = this.state.packs
+        packs = packs.filter(pack => pack.code != code)
+        this.setState({
+            packs: packs
+        })
+    }
+
     componentDidMount() {
         let token = localStorage.getItem("token")
         getPacks(token).then((packs) => {
@@ -33,7 +41,7 @@ class Packs extends React.Component {
         let pack_template = packs.map((pack) =>
             <div key={pack.code} className="pack">
                 <div className="pack_wrap">
-                    <a href={`${apiConfig.api_endpoint}/yugioh/booster/${pack.code}`}>
+                    <a onClick={this.onClickPack.bind(this, pack.code)} target="_blank" href={`${apiConfig.api_endpoint}/yugioh/booster/${pack.code}`}>
                         <img className="pack_image" src={apiConfig.api_endpoint + "/yugioh/booster-art/" + pack.set_name} />
                     </a>
                 </div>

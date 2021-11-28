@@ -62,6 +62,7 @@ module.exports = {
           '@style-variables': path.join(__dirname, 'styles/_variables.scss'),
           '@style-mixins': path.join(__dirname, 'styles/_mixins.scss'),
           '@api-operations': path.join(__dirname, 'operations/api.js'),
+          '@mixin-operations': path.join(__dirname, 'operations/mixins.js'),
           '@pages': path.join(__dirname, 'pages'),
           '@images': path.join(__dirname, 'assets/images/')
         }

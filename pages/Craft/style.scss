@@ -1,0 +1,29 @@
+@import '@style-variables';
+
+.page--craft {
+    .main_container {
+        &--inner {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+    }
+
+    .tab_wrap {
+        display: flex;
+        justify-content: center;
+    }
+    .gems {
+        &_wrap {
+            position: fixed;
+            left: 0;
+            background-color: $dark;
+            z-index: 2;
+            color: white;
+            padding: 1rem;
+            border-radius: 0 4px 4px 0;
+            .gem-icon {
+                margin-left: 0.5rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+.rarity-box {
+    display: flex;
+    flex-wrap: wrap;
+    &_wrap {
+        &:not(:first-child) {
+            margin-top: 2rem;
+        }
+    }
+    .card {
+        cursor: pointer;
+    }
+}

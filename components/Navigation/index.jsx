@@ -10,6 +10,9 @@ import {
 class Navigation extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            gems: 0
+        }
     }
 
     getToken() {
@@ -43,6 +46,11 @@ class Navigation extends React.Component {
                     {hasToken &&
                         <li className={path == "/redeem" ? "active" : ""}>
                             <Link to="/redeem">Redeem</Link>
+                        </li>
+                    }
+                    {hasToken &&
+                        <li className={path == "/craft" ? "active" : ""}>
+                            <Link to="/craft">Craft</Link>
                         </li>
                     }
                     {!hasToken &&

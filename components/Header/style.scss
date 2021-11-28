@@ -4,6 +4,7 @@
     &_logo {
         &_wrap {
             align-self: center;
+            display: flex;
         }
         img {
             max-height: 3rem;
@@ -13,5 +14,11 @@
     }
     nav {
         align-self: center;
+    }
+    .gems {
+        &_wrap {
+            align-self: center;
+            padding: 1rem;
+        }
     }
 }

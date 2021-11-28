@@ -1,5 +1,6 @@
 export {default as Authorized} from './Authorized/index.jsx'
 export {default as Box} from './Box/index.jsx'
+export {default as Craft} from './Craft/index.jsx'
 export {default as DeckBuilder} from './DeckBuilder/index.jsx'
 export {default as Home} from './Home/index.jsx'
 export {default as Login} from './Login/index.jsx'

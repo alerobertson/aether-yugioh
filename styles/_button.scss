@@ -10,4 +10,11 @@
         color: white;
         cursor: pointer;
     }
+    &--danger {
+        color: $red;
+        border-color: $red;
+        &:hover {
+            background-color: $red;
+        }
+    }
 }

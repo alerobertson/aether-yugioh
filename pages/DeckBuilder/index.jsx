@@ -270,7 +270,7 @@ class DeckBuilder extends React.Component {
         const element = document.createElement("a");
         const file = new Blob([deck_string], {type: 'text/plain'});
         element.href = URL.createObjectURL(file);
-        element.download = "aether_deck.ydk";
+        element.download = `${this.state.deck_name}.ydk`;
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
     }

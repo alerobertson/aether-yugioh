@@ -252,3 +252,16 @@ export function editDeckName(token, deck_id, name) {
         return response.data
     })
 }
+
+export function deleteDeck(token, deck_id) {
+    let headers = {
+        "auth_token": token
+    }
+
+    let body = {
+        deck_id: deck_id
+    }
+    return axios.put(config.api_endpoint + '/yugioh/delete-deck/', body, { headers: headers }).then((response) => {
+        return response.data
+    })
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.scss'
-import { getMyCards, sortBy, getMyDecks, saveDeck, newDeck, editDeckName } from '@api-operations'
+import { getMyCards, sortBy, getMyDecks, saveDeck, newDeck, editDeckName, deleteDeck } from '@api-operations'
 import { Fancybox } from '@components'
 import apiConfig from '../../operations/config.json'
 import { withRouter, Link } from "react-router-dom";
@@ -277,15 +277,14 @@ class DeckBuilder extends React.Component {
 
     saveDeck() {
         let token = localStorage.getItem("token")
-        // localStorage.setObject("deck", this.state.deck_cards)
         let cards = this.state.deck_cards.concat(this.state.extra_cards)
         saveDeck(token, this.state.deck_id, this.state.deck_name, cards).then((response) => {
             let deck = this.state.decks.find(d => d.id == this.state.deck_id)
             if(deck) { deck.cards = cards }
             alert('Deck saved to database.')
-            this.setState({
-                decks: decks
-            })
+            // this.setState({
+            //     decks: decks
+            // })
         })
     }
 
@@ -400,6 +399,16 @@ class DeckBuilder extends React.Component {
         })
     }
 
+    deleteDeck() {
+        let token = localStorage.getItem("token")
+        let deck_name = this.state.deck_name
+        if(confirm(`Are you sure you want to delete "${deck_name}"?`)) {
+            deleteDeck(token, this.state.deck_id).then((response) => {
+                location.reload()
+            })
+        }
+    }
+
     render() {
         let box_cards = this.sortCards(this.state.box_cards)
         let deck_id = this.state.deck_id
@@ -463,6 +472,11 @@ class DeckBuilder extends React.Component {
                                         {![-1].includes(deck_id) &&
                                             <a className="button" onClick={this.editDeckName.bind(this)}>
                                                 Edit Deck Name
+                                            </a>
+                                        }
+                                        {![-1].includes(deck_id) &&
+                                            <a className="button button--danger" onClick={this.deleteDeck.bind(this)}>
+                                                Delete Deck
                                             </a>
                                         }
                                     </div>

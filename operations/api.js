@@ -186,3 +186,69 @@ export function enchantCard(token, card_code) {
         return false
     })
 }
+
+export function getMyDecks(token) {
+    let headers = {
+        "auth_token": token
+    }
+    return axios.get(config.api_endpoint + '/yugioh/my-decks/', { headers: headers }).then((response) => {
+        console.log({
+            deck_data: response.data
+        })
+        let decks = response.data
+        decks.forEach((deck) => {
+            deck.cards = sanitizeCards(deck.cards)
+        })
+        return decks
+    }, (error) => {
+        return false
+    })
+}
+
+export function newDeck(token, name) {
+    let headers = {
+        "auth_token": token
+    }
+    let body = {
+        name: name
+    }
+    return axios.post(config.api_endpoint + '/yugioh/new-deck/', body, { headers: headers }).then((response) => {
+        return response.data
+    })
+}
+
+export function saveDeck(token, deck_id, name, cards) {
+    let headers = {
+        "auth_token": token
+    }
+
+    cards = cards.map(card => {
+        return {
+            code: card.code,
+            first_edition: card.first_edition
+        }
+    })
+
+    let body = {
+        deck_id: deck_id,
+        name: name,
+        cards: cards
+    }
+    return axios.post(config.api_endpoint + '/yugioh/save-deck/', body, { headers: headers }).then((response) => {
+        return response.data
+    })
+}
+
+export function editDeckName(token, deck_id, name) {
+    let headers = {
+        "auth_token": token
+    }
+
+    let body = {
+        deck_id: deck_id,
+        name: name
+    }
+    return axios.put(config.api_endpoint + '/yugioh/rename-deck/', body, { headers: headers }).then((response) => {
+        return response.data
+    })
+}

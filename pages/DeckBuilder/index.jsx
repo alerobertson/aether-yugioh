@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.scss'
-import { getMyCards, sortBy } from '@api-operations'
+import { getMyCards, sortBy, getMyDecks, saveDeck, newDeck, editDeckName } from '@api-operations'
 import { Fancybox } from '@components'
 import apiConfig from '../../operations/config.json'
 import { withRouter, Link } from "react-router-dom";
@@ -13,9 +13,12 @@ class DeckBuilder extends React.Component {
             deck_cards: [],
             extra_cards: [],
             box_cards: [],
-            sort_type: 'id',
-            sort_direction: false,
-            hover_card: apiConfig.api_endpoint + '/yugioh/card/BACK'
+            sort_type: 'name',
+            sort_direction: true,
+            hover_card: apiConfig.api_endpoint + '/yugioh/card/BACK',
+            deck_id: -1,
+            decks: [],
+            deck_name: ""
         }
     }
 
@@ -111,6 +114,8 @@ class DeckBuilder extends React.Component {
     }
 
     onBoxCardClick(event) {
+        let deck_id = this.state.deck_id
+        if(deck_id == -1 || deck_id == "old") { return }
         let card = event.target.closest('.card');
         let card_id = card.getAttribute("card_id")
         let card_monster_type = card.getAttribute("card_monster_type")
@@ -123,12 +128,16 @@ class DeckBuilder extends React.Component {
     }
 
     onDeckCardClick(event) {
+        let deck_id = this.state.deck_id
+        if(deck_id == -1 || deck_id == "old") { return }
         let card = event.target.closest('.card');
         let card_id = card.getAttribute("card_id")
         this.moveDeckCard(card_id)
     }
 
     onExtraDeckCardClick(event) {
+        let deck_id = this.state.deck_id
+        if(deck_id == -1 || deck_id == "old") { return }
         let card = event.target.closest('.card');
         let card_id = card.getAttribute("card_id")
         this.moveExtraDeckCard(card_id)
@@ -141,58 +150,101 @@ class DeckBuilder extends React.Component {
 
     componentDidMount() {
         let token = localStorage.getItem("token")
+        let deck_id = parseInt(localStorage.getItem("current_deck_id"))
         getMyCards(token).then((cards) => {
-            let deck = localStorage.getObject("deck")
-            let database_cards = cards
-            let valid = true
-            if(deck) {
-                for (let i = 0; i < deck.length; i++) {
-                    let deck_card = deck[i];
-                    let index = cards.findIndex(c => c.id == deck_card.id);
-                    if(index < 0) {
-                        valid = false
-                        break
+            getMyDecks(token).then((decks) => {
+                let database_cards = JSON.parse(JSON.stringify(cards))
+                let deck = []
+                let extra_deck = []
+                let deck_name = ""
+
+                if(decks.length > 0) {
+                    if(deck_id) {
+                        let current_deck = decks.find(d => d.id == deck_id)
+                        if(current_deck) {
+                            deck = current_deck.cards
+                            deck_name = current_deck.name
+                        }
+                        else {
+                            deck = decks[0].cards
+                            deck_name = decks[0].name
+                            localStorage.setItem("current_deck_id", decks[0].id)
+                        }
                     }
                     else {
-                        cards.splice(index, 1)
+                        deck = decks[0].cards
+                        deck_name = decks[0].name
+                        localStorage.setItem("current_deck_id", decks[0].id)
+                    }
+                
+                    let valid_cards = []
+                    let invalid_cards = []
+
+                    for(let i = 0; i < deck.length; i++) {
+                        let deck_card = deck[i];
+                        let index = cards.findIndex(c => c.code == deck_card.code);
+                        if(index < 0) {
+                            invalid_cards.push(deck_card)
+                        }
+                        else {
+                            valid_cards.push(cards[index])
+                            cards.splice(index, 1)
+                        }
+                    }
+                    deck = valid_cards;
+
+                    if(invalid_cards.length > 0) {
+                        let alert_message = `Unable to find ${invalid_cards.length} card(s) to add to your deck:`
+                        invalid_cards.forEach((card) => {
+                            alert_message += `\r\n(${card.code}) ${card.name} ${card.first_edition ? '[1st]': ''}`
+                        })
+                        alert(alert_message)
+                    }
+                    
+                    // filter out extra deck cards
+                    extra_deck = deck.filter((card) => {
+                        let is_extra = false
+                        if(card.monster_type) {
+                            is_extra = card.monster_type.split('/').includes('Fusion')
+                        }
+                        return is_extra
+                    })
+                    deck = deck.filter((card) => {
+                        let is_extra = false
+                        if(card.monster_type) {
+                            is_extra = card.monster_type.split('/').includes('Fusion')
+                        }
+                        return !is_extra
+                    })
+                }
+                else {
+                    deck_id = -1
+                    
+                    // Check for old deck in memory
+                    let deck_in_memory = localStorage.getObject("deck")
+                    let extra_deck_in_memory = localStorage.getObject("extra_deck")
+                    if(deck_in_memory) {
+                        deck = deck_in_memory
+                    }
+                    if(extra_deck_in_memory) {
+                        extra_deck = extra_deck_in_memory
+                    }
+                    if(deck_in_memory || extra_deck_in_memory) {
+                        deck_id = "old"
+                        deck_name = "Aether Deck"
                     }
                 }
-            }
-            else {
-                deck = []
-            }
 
-            let extra_deck = localStorage.getObject("extra_deck")
-            if(extra_deck) {
-                for (let i = 0; i < extra_deck.length; i++) {
-                    let extra_card = extra_deck[i];
-                    let index = cards.findIndex(c => c.id == extra_card.id);
-                    if(index < 0) {
-                        valid = false
-                        break
-                    }
-                    else {
-                        cards.splice(index, 1)
-                    }
-                }
-            }
-            else {
-                extra_deck = []
-            }
-
-            if(valid) {
                 this.setState({
                     cards: database_cards,
                     box_cards: cards,
                     deck_cards: deck,
-                    extra_cards: extra_deck
+                    extra_cards: extra_deck,
+                    deck_id: deck_id,
+                    decks: decks,
+                    deck_name: deck_name
                 })
-            }
-            else {
-                alert('The deck in browser memory cannot be built with the cards you own. It has been removed.')
-                localStorage.removeItem("deck")
-                localStorage.removeItem("extra_deck")
-            }
+            })
         })
     }
 
@@ -224,13 +276,133 @@ class DeckBuilder extends React.Component {
     }
 
     saveDeck() {
-        localStorage.setObject("deck", this.state.deck_cards)
-        localStorage.setObject("extra_deck", this.state.extra_cards)
-        alert('Deck saved to browser.')
+        let token = localStorage.getItem("token")
+        // localStorage.setObject("deck", this.state.deck_cards)
+        let cards = this.state.deck_cards.concat(this.state.extra_cards)
+        saveDeck(token, this.state.deck_id, this.state.deck_name, cards).then((response) => {
+            let deck = this.state.decks.find(d => d.id == this.state.deck_id)
+            if(deck) { deck.cards = cards }
+            alert('Deck saved to database.')
+            this.setState({
+                decks: decks
+            })
+        })
+    }
+
+    newDeck() {
+        let deck_name = prompt("Enter the name of your new deck:")
+        let token = localStorage.getItem("token")
+        newDeck(token, deck_name).then((new_deck_id) => {
+            localStorage.setItem("current_deck_id", new_deck_id)
+            let decks = this.state.decks
+            decks.push({
+                id: new_deck_id,
+                name: deck_name,
+                cards: []
+            })
+            this.setState({
+                deck_cards: [],
+                deck_id: new_deck_id,
+                extra_cards: [],
+                box_cards: this.state.cards,
+                deck_name: deck_name,
+                decks: decks
+            })
+        })
+    }
+
+    onDeckChange(event) {
+        let select = event.target
+        let deck_id = parseInt(select.value)
+        let deck_info = this.state.decks.find(d => d.id == deck_id)
+        localStorage.setItem("current_deck_id", deck_id)
+        if(!deck_info) {
+            alert('Deck not found.')
+        }
+        else {
+            let deck = deck_info.cards
+            let cards_length = this.state.cards.length;
+            console.log({cards_length})
+            
+            let cards = JSON.parse(JSON.stringify(this.state.cards))
+            let valid_cards = []
+            let invalid_cards = []
+
+            for(let i = 0; i < deck.length; i++) {
+                let deck_card = deck[i];
+                let index = cards.findIndex(c => c.code == deck_card.code);
+                if(index < 0) {
+                    invalid_cards.push(deck_card)
+                }
+                else {
+                    valid_cards.push(cards[index])
+                    cards.splice(index, 1)
+                }
+            }
+            deck = valid_cards;
+
+
+            if(invalid_cards.length > 0) {
+                let alert_message = `Unable to find ${invalid_cards.length} card(s) to add to your deck:`
+                invalid_cards.forEach((card) => {
+                    alert_message += `\r\n(${card.code}) ${card.name} ${card.first_edition ? '[1st]': ''}`
+                })
+                alert(alert_message)
+            }
+
+            // filter out extra deck cards
+            let extra_deck = deck.filter((card) => {
+                let is_extra = false
+                if(card.monster_type) {
+                    is_extra = card.monster_type.split('/').includes('Fusion')
+                }
+                return is_extra
+            })
+            deck = deck.filter((card) => {
+                let is_extra = false
+                if(card.monster_type) {
+                    is_extra = card.monster_type.split('/').includes('Fusion')
+                }
+                return !is_extra
+            })
+
+            this.setState({
+                deck_id: deck_id,
+                deck_name: deck_info.name,
+                deck_cards: deck,
+                extra_cards: extra_deck,
+                box_cards: cards
+            })
+        }
+        
+    }
+
+    convertOldDeck() {
+        let token = localStorage.getItem("token")
+        let cards = this.state.deck_cards.concat(this.state.extra_cards)
+        newDeck(token, "Aether Deck").then((deck_id) => {
+            saveDeck(token, deck_id, "Aether Deck", cards).then((response) => {
+                alert("The deck has successfully been converted to the new format. The page will now refresh")
+                location.reload()
+            })
+        })
+    }
+
+    editDeckName() {
+        let token = localStorage.getItem("token")
+        let deck_name = prompt("Enter a new name for your deck:")
+        editDeckName(token, this.state.deck_id, deck_name).then((response) => {
+            let decks = this.state.decks
+            decks.find(d => d.id == this.state.deck_id).name = deck_name
+            this.setState({
+                decks: decks
+            })
+        })
     }
 
     render() {
         let box_cards = this.sortCards(this.state.box_cards)
+        let deck_id = this.state.deck_id
 
         let deck_card_template = this.state.deck_cards.map((card) =>
             <div onClick={this.onDeckCardClick.bind(this)} card_id={card.id} card_code={card.code} onMouseEnter={this.onCardHover.bind(this)} className={`card ${card.rarity}`} key={card.id.toString()} >
@@ -253,6 +425,12 @@ class DeckBuilder extends React.Component {
             </div>
         )
 
+        let deck_select_template = this.state.decks.map((deck) => 
+            <option key={deck.id} value={deck.id}>
+                {deck.name}
+            </option>
+        )
+
         return (
             <main className="main page page--deck-builder">
                 <div className="main_container main_container--outer">
@@ -264,14 +442,31 @@ class DeckBuilder extends React.Component {
                                 </div>
                             </div>
                             <div className="options_wrap">
-                                <div className="options flex flex--space-between flex--wrap">
-                                    <a className="button" onClick={this.exportDeck.bind(this)}>
-                                        Export .ydk
-                                    </a>
-                                    <a className="button" onClick={this.saveDeck.bind(this)}>
-                                        Save to Browser
-                                    </a>
-                                </div>
+                                {!["old"].includes(deck_id) &&
+                                    <div className="options flex flex--space-between flex--wrap">
+                                        <select value={this.state.deck_id} onChange={this.onDeckChange.bind(this)} className="options_select deck-select block">
+                                            {deck_select_template}
+                                        </select>
+                                        {![-1].includes(deck_id) &&
+                                            <a className="button" onClick={this.exportDeck.bind(this)}>
+                                                Export .ydk
+                                            </a>
+                                        }
+                                        {![-1].includes(deck_id) &&
+                                            <a className="button" onClick={this.saveDeck.bind(this)}>
+                                                Save
+                                            </a>
+                                        }
+                                        <a className="button" onClick={this.newDeck.bind(this)}>
+                                            New Deck
+                                        </a>
+                                        {![-1].includes(deck_id) &&
+                                            <a className="button" onClick={this.editDeckName.bind(this)}>
+                                                Edit Deck Name
+                                            </a>
+                                        }
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div className="deck-box_wrap">
@@ -280,12 +475,17 @@ class DeckBuilder extends React.Component {
                             </div>
                             <div className="deck-box deck-box--extra flex flex--wrap">
                                 {extra_card_template}
+                                {["old"].includes(deck_id) &&
+                                    <a className="button" onClick={this.convertOldDeck.bind(this)}>
+                                        Convert Old Deck
+                                    </a>
+                                }
                             </div>
                         </div>
                         <div className="card-box_wrap">
                             <div className="card-box_filter_wrap">
                                 <div className="card-box_filter">
-                                    <select defaultValue="id" onChange={this.onSortChangeType.bind(this)} className="card-box_filter_item sorting-type">
+                                    <select defaultValue="name" onChange={this.onSortChangeType.bind(this)} className="card-box_filter_item sorting-type">
                                         <option value="id">Date Created</option>
                                         <option value="name">Name</option>
                                         <option value="type">Card Type</option>
@@ -295,7 +495,7 @@ class DeckBuilder extends React.Component {
                                         <option value="attack">Attack</option>
                                         <option value="defense">Defense</option>
                                     </select>
-                                    <select defaultValue="false" onChange={this.onSortChangeDirection.bind(this)} className="card-box_filter_item sorting-direction">
+                                    <select defaultValue="true" onChange={this.onSortChangeDirection.bind(this)} className="card-box_filter_item sorting-direction">
                                         <option value="false">Descending</option>
                                         <option value="true">Ascending</option>
                                     </select>

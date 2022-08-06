@@ -148,6 +148,15 @@ class DeckBuilder extends React.Component {
         return sortBy(cards, this.state.sort_type, this.state.sort_direction)
     }
 
+    sortDeckCardsByType() {
+        let cards = this.state.deck_cards
+        cards = sortBy(cards, 'name', true)
+        cards = sortBy(cards, 'type', true)
+        this.setState({
+            deck_cards: cards
+        })
+    }
+
     componentDidMount() {
         let token = localStorage.getItem("token")
         let deck_id = parseInt(localStorage.getItem("current_deck_id"))
@@ -477,6 +486,11 @@ class DeckBuilder extends React.Component {
                                         {![-1].includes(deck_id) &&
                                             <a className="button button--danger" onClick={this.deleteDeck.bind(this)}>
                                                 Delete Deck
+                                            </a>
+                                        }
+                                        {![-1].includes(deck_id) &&
+                                            <a className="button" onClick={this.sortDeckCardsByType.bind(this)}>
+                                                Sort Deck
                                             </a>
                                         }
                                     </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import jsxToString from 'jsx-to-string';
 import './style.scss'
-import { disenchantCard, enchantCard, getMyCards, sortBy, getMe, getCardSets } from '@api-operations'
+import { disenchantCard, enchantCard, getMyCards, sortBy, getMe, getCardSets, getStarterDecks, purchaseDeck } from '@api-operations'
 import { modalOpen } from '@mixin-operations'
 import { Card } from '@components'
 import { withRouter } from "react-router-dom";
@@ -20,7 +20,8 @@ class Craft extends React.Component {
             secret_rare: [],
             sets: [],
             active_set: 'LOB',
-            gems: 0
+            gems: 0,
+            starter_decks: []
         }
     }
 
@@ -137,6 +138,64 @@ class Craft extends React.Component {
         }, 0)
     }
 
+    onStarterDeckClick(deck_info, event) {
+        event.preventDefault()
+        let template = jsxToString(
+            <div class="craft-card_wrap">
+                <div class="craft-card">
+                    <div class="">
+                        <img src={deck_info.image_url} />
+                    </div>
+                </div>
+                <div class="craft-card_option enchant">
+                    <p>Buy</p>
+                    <p><span>{`- ${deck_info.price}`}</span><img class="gem-icon" src={gem_icon} /></p>
+                </div>
+            </div>
+        )
+        modalOpen({
+            body: template,
+            click_events: [
+                {
+                    selector: '.craft-card_option.enchant',
+                    callback: () => {
+                        this.purchaseDeck(deck_info.code)
+                    }
+                }
+            ]
+        }, 0)
+    }
+
+    purchaseDeck(code) {
+        let token = localStorage.getItem("token")
+        purchaseDeck(token, code).then((success) => {
+            if(success) {
+                this.state.starter_decks.find(deck => deck.code == code).owned = true
+                this.setState({})
+                modalOpen({
+                    body: jsxToString(
+                        <div class="alert-box_wrap">
+                            <div class="alert-box">
+                                Successfully purchased!
+                            </div>
+                        </div>
+                    )
+                }, 0)
+            }
+            else {
+                modalOpen({
+                    body: jsxToString(
+                        <div class="alert-box_wrap">
+                            <div class="alert-box alert-box--error">
+                                An error has occured
+                            </div>
+                        </div>
+                    )
+                }, 0)
+            }
+        })
+    }
+
     changeMode(mode, event) {
         event.preventDefault()
         this.setState({
@@ -185,11 +244,13 @@ class Craft extends React.Component {
     }
 
     componentDidMount() {
+        let token = localStorage.getItem("token")
         document.addEventListener('click', function (event) {
             if (!event.target.matches('#modal') && !event.target.matches('.modal') && !event.target.matches('.modal_content') && !event.target.matches('.craft-card_wrap')) return;
             modalClose(0)
         }, false);
         getCardSets().then((sets) => {
+        getStarterDecks(token).then((starter_decks) => {
             sets = sets.filter(set => set.craftable == true)
             if(sets) {
                 sets = sets.map(set => {
@@ -198,10 +259,11 @@ class Craft extends React.Component {
                     return set
                 })
                 this.setState({
-                    sets: sets
+                    sets: sets,
+                    starter_decks: starter_decks
                 })
             }
-        })
+        })})
         this.refreshData()
     }
 
@@ -253,6 +315,8 @@ class Craft extends React.Component {
 
     render() {
         let craftable_set = this.getCardSet(this.state.active_set)
+        let starter_decks = this.state.starter_decks.filter(starter_deck => !starter_deck.owned && starter_deck.available)
+
         return (
             <main className="main page page--craft">
                 <div className="main_container main_container--outer">
@@ -269,6 +333,9 @@ class Craft extends React.Component {
                             </a>
                             <a onClick={this.changeMode.bind(this, "enchant")} className={"button tab" + (this.state.mode=="enchant" ? " active" : "")} href="#enchant">
                                 Enchant
+                            </a>
+                            <a onClick={this.changeMode.bind(this, "starter-decks")} className={"button tab" + (this.state.mode=="starter-decks" ? " active" : "")} href="#starter-decks">
+                                Starter Decks
                             </a>
                         </div>
                         {this.state.mode == "disenchant" &&
@@ -292,6 +359,15 @@ class Craft extends React.Component {
                                 {this.rarityBox(craftable_set.cards.super_rare, "super_rare")}
                                 {this.rarityBox(craftable_set.cards.rare, "rare")}
                                 {this.rarityBox(craftable_set.cards.common, "common")}
+                            </div>
+                        }
+                        {this.state.mode == "starter-decks" &&
+                            <div className="starter-decks">
+                                {starter_decks.map((starter_deck) =>
+                                    <div onClick={this.onStarterDeckClick.bind(this, starter_deck)} className="starter-decks_item" key={starter_deck.code}>
+                                        <img src={starter_deck.image_url} />
+                                    </div>
+                                )}
                             </div>
                         }
                     </div>

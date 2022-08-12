@@ -265,3 +265,29 @@ export function deleteDeck(token, deck_id) {
         return response.data
     })
 }
+
+export function getStarterDecks(token) {
+    let headers = {
+        "auth_token": token
+    }
+
+    return axios.get(config.api_endpoint + '/yugioh/starter-decks/', { headers: headers }).then((response) => {
+        let starter_decks = response.data.map((starter_deck) => {
+            starter_deck.image_url = config.api_endpoint + '/yugioh/deck-art/' + starter_deck.code
+            return starter_deck
+        })
+        return starter_decks
+    })
+}
+
+export function purchaseDeck(token, code) {
+    let headers = {
+        "auth_token": token
+    }
+
+    return axios.get(config.api_endpoint + '/yugioh/purchase-deck/' + code, { headers: headers }).then((response) => {
+        return true
+    }, (error) => {
+        return false
+    })
+}

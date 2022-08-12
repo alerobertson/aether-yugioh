@@ -26,4 +26,19 @@
             }
         }
     }
+
+    .starter-decks {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 960px;
+        margin: auto;
+        &_item {
+            > img {
+                display: block;
+                width: 200px;
+                padding: 20px;
+            }
+        }
+    }
 }

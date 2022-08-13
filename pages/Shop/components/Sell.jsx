@@ -96,22 +96,22 @@ function Sell(props) {
   const renderCards = () => {
     return (
       <div className="px-0 mx-0">
-        <div style={{ backgroundColor: "rgba(255, 51, 51, 0.20)" }}>
-          <h2 className="text-center">Secret Rare</h2>
-          <div className="d-flex flex-wrap justify-content-center">
+        <div className="p-5" style={{ backgroundColor: "rgba(255, 51, 51, 0.20)" }}>
+          <h2 className="text-center mb-3">Secret Rare</h2>
+          <div className="d-flex flex-wrap justify-content-start">
             {boxCards.secret_rare.length == 0 && (
-              <Card.Text className="text-center">Nothing On Sale.</Card.Text>
+              <Card.Text className="text-center">Nothing to Sell.</Card.Text>
             )}
             {boxCards.secret_rare.map((card) => {
               return renderCard(card);
             })}
           </div>
         </div>
-        <div style={{ backgroundColor: "rgba(255, 221, 46, 0.20)" }}>
-          <h2 className="text-center">Ultra Rare</h2>{" "}
-          <div className="d-flex  flex-wrap justify-content-center">
+        <div className="p-5" style={{ backgroundColor: "rgba(255, 221, 46, 0.20)" }}>
+          <h2 className="text-center mb-3">Ultra Rare</h2>{" "}
+          <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.ultra_rare.length == 0 && (
-              <Card.Text className="text-center">Nothing On Sale.</Card.Text>
+              <Card.Text className="text-center">Nothing to Sell.</Card.Text>
             )}
 
             {boxCards.ultra_rare.map((card) => {
@@ -119,11 +119,11 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div style={{ backgroundColor: "rgba(194, 69, 255, 0.20)" }}>
-          <h2 className="text-center">Super Rare</h2>{" "}
-          <div className="d-flex  flex-wrap justify-content-center">
+        <div className="p-5" style={{ backgroundColor: "rgba(194, 69, 255, 0.20)" }}>
+          <h2 className="text-center mb-3">Super Rare</h2>{" "}
+          <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.super_rare.length == 0 && (
-              <Card.Text className="text-center">Nothing On Sale.</Card.Text>
+              <Card.Text className="text-center">Nothing to Sell.</Card.Text>
             )}
 
             {boxCards.super_rare.map((card) => {
@@ -131,11 +131,11 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div style={{ backgroundColor: "rgba(69, 111, 255, 0.20)" }}>
-          <h2 className="text-center">Rare</h2>{" "}
-          <div className="d-flex  flex-wrap justify-content-center">
+        <div className="p-5" style={{ backgroundColor: "rgba(69, 111, 255, 0.20)" }}>
+          <h2 className="text-center mb-3">Rare</h2>{" "}
+          <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.rare.length == 0 && (
-              <Card.Text className="text-center">Nothing On Sale.</Card.Text>
+              <Card.Text className="text-center">Nothing to Sell.</Card.Text>
             )}
 
             {boxCards.rare.map((card) => {
@@ -143,11 +143,11 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
-          <h2 className="text-center">Common</h2>
-          <div className="d-flex  flex-wrap justify-content-center">
+        <div className="p-5" style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
+          <h2 className="text-center mb-3">Common</h2>
+          <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.common.length == 0 && (
-              <Card.Text className="text-center">Nothing On Sale.</Card.Text>
+              <Card.Text className="text-center">Nothing to Sell.</Card.Text>
             )}
 
             {boxCards.common.map((card) => {

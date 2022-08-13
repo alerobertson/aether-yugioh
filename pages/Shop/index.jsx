@@ -10,25 +10,29 @@ import Decks from "./components/Decks.jsx";
 
 function Shop(props) {
   return (
-    <>
-      <Tabs defaultActiveKey="buy" id="fill-tab-example" className="my-3" fill>
-        <Tab eventKey="buy" title="Buy Cards">
-          <Container>
-            <Buy />
-          </Container>
-        </Tab>
-        <Tab eventKey="decks" title="Buy Decks">
-          <Container>
-            <Decks />
-          </Container>
-        </Tab>
-        <Tab eventKey="sell" title="Sell Cards">
-          <Container>
-            <Sell />
-          </Container>
-        </Tab>
-      </Tabs>
-    </>
+    <main className="main page page--shop">
+      <div className="main_container main_container--outer">
+        <div className="main_container main_container--inner">
+          <Tabs defaultActiveKey="buy" id="fill-tab-example" className="my-3" fill>
+            <Tab eventKey="buy" title="Buy Cards">
+              <Container>
+                <Buy />
+              </Container>
+            </Tab>
+            <Tab eventKey="decks" title="Buy Decks">
+              <Container>
+                <Decks />
+              </Container>
+            </Tab>
+            <Tab eventKey="sell" title="Sell Cards">
+              <Container>
+                <Sell />
+              </Container>
+            </Tab>
+          </Tabs>
+        </div>
+      </div>
+    </main>
   );
 }
 

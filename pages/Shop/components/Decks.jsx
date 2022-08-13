@@ -60,7 +60,7 @@ function Buy(props) {
         className="starter-decks_item"
         key={deck.code}
       >
-        <img src={deck.image_url} />
+        <img className="p-3" src={deck.image_url} />
       </div>
     );
   };
@@ -68,8 +68,8 @@ function Buy(props) {
   const renderDecks = () => {
     return (
       <div className="px-0 mx-0">
-        <div style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
-          <h2 className="text-center">Decks</h2>
+        <div className="p-5" style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
+          <h2 className="text-center mb-3">Decks</h2>
           <div className="d-flex flex-wrap justify-content-center">
             {starterDecks.length == 0 && (
               <Card.Text className="text-center">Nothing On Sale.</Card.Text>

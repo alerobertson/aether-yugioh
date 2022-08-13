@@ -4,11 +4,12 @@ import { getMyCards, sortBy, getMyDecks, saveDeck, newDeck, editDeckName, delete
 import { Fancybox } from '@components'
 import apiConfig from '../../operations/config.json'
 import { withRouter, Link } from "react-router-dom";
-
+import Deckbox from './components/Deckbox.jsx'
 class DeckBuilder extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            search: "",
             cards: [],
             deck_cards: [],
             extra_cards: [],
@@ -27,21 +28,21 @@ class DeckBuilder extends React.Component {
         return token
     }
 
-    onSortChangeType(event) {
-        let select = event.target
-        let type = select.value
-        this.setState({
-            sort_type: type
-        })
-    }
+    // onSortChangeType(event) {
+    //     let select = event.target
+    //     let type = select.value
+    //     this.setState({
+    //         sort_type: type
+    //     })
+    // }
 
-    onSortChangeDirection(event) {
-        let select = event.target
-        let direction = select.value
-        this.setState({
-            sort_direction: direction == "true" ? true : false
-        })
-    }
+    // onSortChangeDirection(event) {
+    //     let select = event.target
+    //     let direction = select.value
+    //     this.setState({
+    //         sort_direction: direction == "true" ? true : false
+    //     })
+    // }
 
     onCardHover(event) {
         let card = event.target.closest('.card');
@@ -50,6 +51,11 @@ class DeckBuilder extends React.Component {
             hover_card: src
         })
     }
+
+
+    handleSearchChange(event) {   
+        this.setState({search: event.target.search});  
+      }
 
     moveBoxCard(card_id, is_extra) {
         let box_cards = this.state.box_cards
@@ -419,7 +425,11 @@ class DeckBuilder extends React.Component {
     }
 
     render() {
-        let box_cards = this.sortCards(this.state.box_cards)
+        // let filtered_box_cards = this.state.box_cards.filter((card) =>{
+        //     card.name.includes(this.state.search)
+
+        // })
+        // let box_cards = this.sortCards(this.state.box_cards)
         let deck_id = this.state.deck_id
 
         let deck_card_template = this.state.deck_cards.map((card) =>
@@ -431,13 +441,6 @@ class DeckBuilder extends React.Component {
 
         let extra_card_template = this.state.extra_cards.map((card) =>
             <div onClick={this.onExtraDeckCardClick.bind(this)} card_id={card.id} card_code={card.code} onMouseEnter={this.onCardHover.bind(this)} className={`card ${card.rarity}`} key={card.id.toString()} >
-                <div className="card_effect"></div>
-                <img alt={card.name} src={card.image_url} />
-            </div>
-        )
-
-        let box_card_template = box_cards.map((card) =>
-            <div onClick={this.onBoxCardClick.bind(this)} card_id={card.id} card_code={card.code} card_monster_type={card.monster_type} onMouseEnter={this.onCardHover.bind(this)} className={`card ${card.rarity}`} key={card.id.toString()} >
                 <div className="card_effect"></div>
                 <img alt={card.name} src={card.image_url} />
             </div>
@@ -510,29 +513,7 @@ class DeckBuilder extends React.Component {
                                 }
                             </div>
                         </div>
-                        <div className="card-box_wrap">
-                            <div className="card-box_filter_wrap">
-                                <div className="card-box_filter">
-                                    <select defaultValue="name" onChange={this.onSortChangeType.bind(this)} className="card-box_filter_item sorting-type">
-                                        <option value="id">Date Created</option>
-                                        <option value="name">Name</option>
-                                        <option value="type">Card Type</option>
-                                        <option value="rarity_index">Rarity</option>
-                                        <option value="level">Monster Level</option>
-                                        <option value="spell_trap_type">Spell/Trap Type</option>
-                                        <option value="attack">Attack</option>
-                                        <option value="defense">Defense</option>
-                                    </select>
-                                    <select defaultValue="true" onChange={this.onSortChangeDirection.bind(this)} className="card-box_filter_item sorting-direction">
-                                        <option value="false">Descending</option>
-                                        <option value="true">Ascending</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="card-box flex flex--wrap">
-                                {box_card_template}
-                            </div>
-                        </div>
+                        <Deckbox box_cards={this.state.box_cards} onClickHandler={this.onBoxCardClick.bind(this)} onMouseEnterHandler={this.onCardHover.bind(this)} />
                     </div>
                 </div>
             </main>

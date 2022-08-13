@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
-import Stack from "react-bootstrap/Stack";
 import { Card as CardComponent } from "@components";
+import gem_icon from "@images/gem.png";
 
 import "../style.scss";
 import {
@@ -56,8 +56,8 @@ function Sell(props) {
     // disenchantCard(token, card_id).then((success) => {
     //   if (success) {
     //     console.log("Sold");
-        setSelectedCard(null);
-    //     getInfo();
+    setSelectedCard(null);
+    getInfo();
     //   } else {
     //     console.log("Error");
     //   }
@@ -171,10 +171,7 @@ function Sell(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title>
-              <h3>
-                Sell {selectedCard.name} for <u>{selectedCard.disenchant}</u>{" "}
-                gems?
-              </h3>
+              <h3>Sell {selectedCard.name}?</h3>
             </Modal.Title>
           </Modal.Header>
 
@@ -189,6 +186,7 @@ function Sell(props) {
             variant="danger"
             size="lg"
             className="m-4 p-4"
+            disabled={soldFlag}
             onClick={() => {
               setSoldFlag(true);
               setTimeout(() => {
@@ -197,16 +195,29 @@ function Sell(props) {
               }, 1500);
             }}
           >
-            Sell
+            <h4>
+              Sell for <u>{selectedCard.disenchant}</u>{" "}
+              <img class="gem-icon" src={gem_icon} /> ?
+            </h4>
           </Button>
         </Modal>
       )}
 
       <Card style={{ width: "100%", borderRadius: "0%" }}>
         <Card.Header className="text-center">
-          <h1>Sell [{gems} gems]</h1>
+          <h1>Sell Cards</h1>
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img class="gem-icon" src={gem_icon} />
+            {gems}
+          </span>
         </Card.Header>
-        {renderCards()}
+        <Card.Body>{renderCards()}</Card.Body>
       </Card>
     </div>
   );

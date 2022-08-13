@@ -3,3 +3,22 @@
     opacity: 0;
     transition: visibility 0s 1s, opacity 1s linear;
 }
+.buyAnimation {
+    animation: pulse 0.25s infinite alternate;
+}
+@keyframes pulse {
+    from {
+        box-shadow: 0px 0px 0px 0px #d4af37;
+    }
+    to {
+        box-shadow: 0px 0px 100px 10px #d4af37;
+    }
+}
+.gem-icon {
+    margin-right: 6px;
+    margin-left: 6px;
+    max-height: 32px;
+    max-width: 32px;
+    width: 32px;
+    height: 32px;
+}

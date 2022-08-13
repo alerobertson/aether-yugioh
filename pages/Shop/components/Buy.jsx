@@ -227,11 +227,13 @@ function Buy(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
+            className="my-4"
           >
             <img class="gem-icon" src={gem_icon} />
             {gems}
           </span>
           <Form.Select
+            style={{ minWidth: "100%" }}
             value={selectedSetName}
             onChange={(val) => {
               setSelectedSetName(val.target.value);

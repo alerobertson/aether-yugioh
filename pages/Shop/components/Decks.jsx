@@ -137,6 +137,7 @@ function Buy(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
+            className="my-4"
           >
             <img class="gem-icon" src={gem_icon} />
             {gems}

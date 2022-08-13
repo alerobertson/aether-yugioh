@@ -52,16 +52,16 @@ function Sell(props) {
   };
 
   const disenchant = (card_id) => {
-    // let token = localStorage.getItem("token");
-    // disenchantCard(token, card_id).then((success) => {
-    //   if (success) {
-    //     console.log("Sold");
-    setSelectedCard(null);
-    getInfo();
-    //   } else {
-    //     console.log("Error");
-    //   }
-    // });
+    let token = localStorage.getItem("token");
+    disenchantCard(token, card_id).then((success) => {
+      if (success) {
+        console.log("Sold");
+        setSelectedCard(null);
+        getInfo();
+      } else {
+        console.log("Error");
+      }
+    });
   };
 
   const sortRarity = (cards) => {

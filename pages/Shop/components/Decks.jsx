@@ -40,16 +40,15 @@ function Buy(props) {
 
   const enchantDeck = (code) => {
     let token = localStorage.getItem("token");
-    console.log(token, code);
-    // purchaseDeck(token, code).then((success) => {
-    //   if (success) {
-    //     console.log("Bought");
-    setSelectedDeck(null);
-    getInfo();
-    //   } else {
-    //     console.log("Error");
-    //   }
-    // });
+    purchaseDeck(token, code).then((success) => {
+      if (success) {
+        console.log("Bought");
+        setSelectedDeck(null);
+        getInfo();
+      } else {
+        console.log("Error");
+      }
+    });
   };
 
   const renderDeck = (deck) => {

@@ -85,15 +85,15 @@ function Buy(props) {
 
   const enchant = (card_id) => {
     let token = localStorage.getItem("token");
-    // enchantCard(token, card_id).then((success) => {
-    //   if (success) {
-    //     console.log("Bought");
-    setSelectedCard(null);
-    getInfo();
-    //   } else {
-    //     console.log("Error");
-    //   }
-    // });
+    enchantCard(token, card_id).then((success) => {
+      if (success) {
+        console.log("Bought");
+        setSelectedCard(null);
+        getInfo();
+      } else {
+        console.log("Error");
+      }
+    });
   };
 
   const renderCard = (card) => {

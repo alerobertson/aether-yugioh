@@ -62,7 +62,9 @@ function TradeList(props) {
             >
               <Card.Img variant="top" src={duelist.avatar} />
               <Card.Body>
-                <Card.Title>{duelist.username}</Card.Title>
+                <Card.Title className="text-center">
+                  {duelist.username}
+                </Card.Title>
               </Card.Body>
               <Card.Footer>
                 <Button
@@ -106,7 +108,9 @@ function TradeList(props) {
             >
               <Card.Img variant="top" src={otherTrader.avatar} />
               <Card.Body>
-                <Card.Title>{otherTrader.username}</Card.Title>
+                <Card.Title className="text-center">
+                  {otherTrader.username}
+                </Card.Title>
               </Card.Body>
               <Card.Footer>
                 <Button

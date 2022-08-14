@@ -73,8 +73,8 @@ function Deckbox(props) {
           alt={card.name}
           src={card.image_url}
           loading="lazy"
-          // width="95"
-          // height="138"
+          width="100%"
+          height="100%"
         />
       </div>
     );

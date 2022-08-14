@@ -51,7 +51,7 @@ function Deckbox(props) {
       }
       setBoxCards(temp_boxCards);
     }
-  }, [box_cards, sortDir, sortCat, searchText]);
+  }, [box_cards, box_cards.length, sortDir, sortCat, searchText]);
 
   const box_card_template = boxCards.map((card) => {
     return (

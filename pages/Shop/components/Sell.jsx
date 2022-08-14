@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import { Card as CardComponent } from "@components";
 import gem_icon from "@images/gem.png";
-
+import Form from "react-bootstrap/Form";
 import "../style.scss";
 import {
   disenchantCard,
@@ -18,6 +18,7 @@ import {
 } from "@api-operations";
 
 function Sell(props) {
+  const [onlyDuplicates, setOnlyDuplicates] = useState(false);
   const [soldFlag, setSoldFlag] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [boxCards, setBoxCards] = useState({
@@ -82,6 +83,14 @@ function Sell(props) {
   };
 
   const renderCard = (card) => {
+    if (onlyDuplicates) {
+      const duplicates = boxCards[card.rarity].filter((c_val) => {
+        return c_val.code == card.code;
+      });
+      if (duplicates.length == 1) {
+        return null;
+      }
+    }
     return (
       <CardComponent
         key={card.id.toString()}
@@ -96,7 +105,10 @@ function Sell(props) {
   const renderCards = () => {
     return (
       <div className="px-0 mx-0">
-        <div className="p-5" style={{ backgroundColor: "rgba(255, 51, 51, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(255, 51, 51, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Secret Rare</h2>
           <div className="d-flex flex-wrap justify-content-start">
             {boxCards.secret_rare.length == 0 && (
@@ -107,7 +119,10 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(255, 221, 46, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(255, 221, 46, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Ultra Rare</h2>{" "}
           <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.ultra_rare.length == 0 && (
@@ -119,7 +134,10 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(194, 69, 255, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(194, 69, 255, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Super Rare</h2>{" "}
           <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.super_rare.length == 0 && (
@@ -131,7 +149,10 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(69, 111, 255, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(69, 111, 255, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Rare</h2>{" "}
           <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.rare.length == 0 && (
@@ -143,7 +164,10 @@ function Sell(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Common</h2>
           <div className="d-flex  flex-wrap justify-content-start">
             {boxCards.common.length == 0 && (
@@ -197,7 +221,7 @@ function Sell(props) {
           >
             <h4>
               Sell for <u>{selectedCard.disenchant}</u>{" "}
-              <img class="gem-icon" src={gem_icon} /> ?
+              <img className="gem-icon" src={gem_icon} /> ?
             </h4>
           </Button>
         </Modal>
@@ -206,6 +230,7 @@ function Sell(props) {
       <Card style={{ width: "100%", borderRadius: "0%" }}>
         <Card.Header className="text-center">
           <h1>Sell Cards</h1>
+
           <span
             style={{
               display: "flex",
@@ -214,9 +239,24 @@ function Sell(props) {
             }}
             className="my-4"
           >
-            <img class="gem-icon" src={gem_icon} />
+            <img className="gem-icon" src={gem_icon} />
             {gems}
           </span>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "left",
+            }}
+          >
+            <Form.Check
+              type="switch"
+              label="Only Duplicates"
+              checked={onlyDuplicates}
+              onChange={() => {
+                setOnlyDuplicates(!onlyDuplicates);
+              }}
+            />
+          </div>
         </Card.Header>
         <Card.Body>{renderCards()}</Card.Body>
       </Card>

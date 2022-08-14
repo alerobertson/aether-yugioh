@@ -212,7 +212,7 @@ function Buy(props) {
           >
             <h4>
               Buy for <u>{selectedCard.enchant}</u>{" "}
-              <img class="gem-icon" src={gem_icon} /> ?
+              <img className="gem-icon" src={gem_icon} /> ?
             </h4>
           </Button>
         </Modal>
@@ -229,7 +229,7 @@ function Buy(props) {
             }}
             className="my-4"
           >
-            <img class="gem-icon" src={gem_icon} />
+            <img className="gem-icon" src={gem_icon} />
             {gems}
           </span>
           <Form.Select

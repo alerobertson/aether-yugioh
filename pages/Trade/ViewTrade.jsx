@@ -182,7 +182,13 @@ function ViewTrade(props) {
                               key={card.id.toString()}
                             >
                               <div className="card_effect"></div>
-                              <img alt={card.name} src={card.image_url} />
+                              <img
+                                alt={card.name}
+                                src={card.image_url}
+                                loading="lazy"
+                                width="100%"
+                                height="100%"
+                              />
                             </div>
                           );
                         })}
@@ -214,7 +220,13 @@ function ViewTrade(props) {
                               key={card.id.toString()}
                             >
                               <div className="card_effect"></div>
-                              <img alt={card.name} src={card.image_url} />
+                              <img
+                                alt={card.name}
+                                src={card.image_url}
+                                loading="lazy"
+                                width="100%"
+                                height="100%"
+                              />
                             </div>
                           );
                         })}

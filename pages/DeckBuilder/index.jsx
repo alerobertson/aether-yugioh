@@ -9,6 +9,7 @@ import {
   editDeckName,
   deleteDeck,
 } from "@api-operations";
+import banlist from "./banlist";
 import { Fancybox } from "@components";
 import apiConfig from "../../operations/config.json";
 import { withRouter, Link } from "react-router-dom";
@@ -494,6 +495,66 @@ class DeckBuilder extends React.Component {
         {deck.name}
       </option>
     ));
+
+    const BannedListCards = () => {
+      const card_list = [];
+      banlist.banned.forEach((item) => {
+        const count = [
+          ...this.state.deck_cards,
+          ...this.state.extra_cards,
+        ].filter((cd) => {
+          return cd.name == item;
+        }).length;
+        if (count > 0) {
+          card_list.push(
+            <div key={item} style={{ color: "red" }}>
+              {count}x {item}
+            </div>
+          );
+        }
+      });
+      return card_list;
+    };
+
+    const LimitedListCards = () => {
+      const card_list = [];
+      banlist.limited.forEach((item) => {
+        const count = [
+          ...this.state.deck_cards,
+          ...this.state.extra_cards,
+        ].filter((cd) => {
+          return cd.name == item;
+        }).length;
+        if (count > 1) {
+          card_list.push(
+            <div key={item} style={{ color: "red" }}>
+              {count}x {item}
+            </div>
+          );
+        }
+      });
+      return card_list;
+    };
+    const SemiLimitedListCards = () => {
+      const card_list = [];
+      banlist.semilimited.forEach((item) => {
+        const count = [
+          ...this.state.deck_cards,
+          ...this.state.extra_cards,
+        ].filter((cd) => {
+          return cd.name == item;
+        }).length;
+        if (count > 2) {
+          card_list.push(
+            <div key={item} style={{ color: "red" }}>
+              {count}x {item}
+            </div>
+          );
+        }
+      });
+      return card_list;
+    };
+
     return (
       <main className="main page page--deck-builder">
         <div className="main_container main_container--outer">
@@ -560,14 +621,60 @@ class DeckBuilder extends React.Component {
                   <Card.Body>
                     <Card.Title>Deck Stats</Card.Title>
                     <ListGroup variant="flush">
-                      <ListGroup.Item style={{color:this.state.deck_cards.length + this.state.extra_cards.length > 75 ? "red" : "green"}}>
-                        Deck Size: {this.state.deck_cards.length + this.state.extra_cards.length} / 75
+                      <ListGroup.Item>
+                        Deck Size:{" "}
+                        <span
+                          style={{
+                            color:
+                              this.state.deck_cards.length +
+                                this.state.extra_cards.length >
+                              75
+                                ? "red"
+                                : "green",
+                          }}
+                        >
+                          {this.state.deck_cards.length +
+                            this.state.extra_cards.length}
+                        </span>{" "}
+                        / 75
                       </ListGroup.Item>
-                      <ListGroup.Item  style={{color:this.state.extra_cards.length > 60 ? "red" : "green"}}>
-                        Main Size: {this.state.deck_cards.length} / 60
+                      <ListGroup.Item>
+                        Main Size:{" "}
+                        <span
+                          style={{
+                            color:
+                              this.state.deck_cards.length > 60
+                                ? "red"
+                                : "green",
+                          }}
+                        >
+                          {this.state.deck_cards.length}
+                        </span>{" "}
+                        / 60
                       </ListGroup.Item>
-                      <ListGroup.Item  style={{color:this.state.extra_cards.length > 15 ? "red" : "green"}}>
-                        Extra Size: {this.state.extra_cards.length} / 15
+                      <ListGroup.Item>
+                        Extra Size:{" "}
+                        <span
+                          style={{
+                            color:
+                              this.state.extra_cards.length > 15
+                                ? "red"
+                                : "green",
+                          }}
+                        >
+                          {this.state.extra_cards.length}
+                        </span>{" "}
+                        / 15
+                      </ListGroup.Item>
+
+                      <ListGroup.Item>
+                        Banned Cards (Max 0): {BannedListCards()}
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        Limited Cards (Max 1): {LimitedListCards()}
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        Semi-Limited Cards (Max 2): {SemiLimitedListCards()}
                       </ListGroup.Item>
                     </ListGroup>
                   </Card.Body>

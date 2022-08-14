@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../style.scss";
+import "./style.scss";
 
 function Deckbox(props) {
   const { box_cards, onClickHandler, onMouseEnterhandler } = props;
@@ -73,8 +73,8 @@ function Deckbox(props) {
           alt={card.name}
           src={card.image_url}
           loading="lazy"
-          width="95"
-          height="138"
+          // width="95"
+          // height="138"
         />
       </div>
     );
@@ -82,7 +82,8 @@ function Deckbox(props) {
 
   return (
     <>
-      <div className="card-box_wrap">
+      {/*<div className="card-box_wrap">*/}
+      <div className="card-box_wrap" style={{ width: "100%" }}>
         <div className="card-box_filter_wrap">
           <div className="card-box_search">
             <input
@@ -123,7 +124,9 @@ function Deckbox(props) {
             </select>
           </div>
         </div>
-        <div className="card-box flex flex--wrap">{box_card_template}</div>
+        <div className="card-box flex flex--wrap justify-content-center">
+          {box_card_template}
+        </div>
       </div>{" "}
     </>
   );

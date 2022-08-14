@@ -1,0 +1,68 @@
+.page--deck-builder {
+    .deck-box {
+        padding: 0 2rem;
+        .card {
+            width: calc(100% / 10);
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        &_wrap {
+            flex-grow: 1;
+        }
+        &--extra {
+            padding-top: 2rem;
+        }
+    }
+    .preview-box {
+        .card {
+            width: 30rem;
+        }
+    }
+    .card-box {
+        width: 30rem;
+        max-height: 80vh;
+        overflow-y: scroll;
+        margin-top: 0;
+        .card {
+            width: calc(100% / 3);
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+    .main {
+        &_container {
+            &--inner {
+                padding-top: 4rem;
+            }
+        }
+    }
+    .options {
+        max-width: 300px;
+        &_wrap {
+            margin-top: 2rem;
+        }
+        a {
+            cursor: pointer;
+        }
+        .button {
+            width: 300px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            display: block;
+        }
+    }
+}
+
+.card-box_search {
+    input {
+        width: 100%;
+    }
+}
+
+.card-box_filter {
+    select {
+        width: 50%;
+    }
+}

@@ -14,6 +14,7 @@ import {
     Shop,
     TradeList,
     ViewTrade,
+    NewTrade,
 } from "@pages";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -29,6 +30,9 @@ class Page extends React.Component {
                 </Route>
                 <Route path="/trade">
                     <Trade />
+                </Route>
+                  <Route path="/tradelist/new/:id">
+                    <NewTrade />
                 </Route>
                 <Route path="/tradelist/:id">
                     <ViewTrade />

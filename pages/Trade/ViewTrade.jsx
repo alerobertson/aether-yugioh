@@ -31,28 +31,22 @@ function ViewTrade(props) {
     getInfo();
   }, []);
 
-  const getInfo = () => {
+  const getInfo = async () => {
     let token = localStorage.getItem("token");
-    let promises = [];
-    let offers, me;
-    promises.push(
-      getOffers(token).then((response) => {
-        offers = response.filter((offer) => offer.state == "open");
-      })
-    );
-    promises.push(
-      getMe(token).then((response) => {
-        me = response;
-      })
-    );
-    Promise.all(promises).then(() => {
-      const offer = offers.find((offer) => {
-        return offer.id == params.id;
-      });
-      if (offer == undefined){
+
+    await getMe(token).then((response) => {
+      setMe(response);
+    });
+
+    await getOffers(token).then((response) => {
+      const offer = response
+        .filter((offer) => offer.state == "open")
+        .find((offer) => {
+          return offer.id == params.id;
+        });
+      if (offer == undefined) {
         history.push(`/tradelist`);
       }
-      setMe(me);
       setOffer(offer);
     });
   };

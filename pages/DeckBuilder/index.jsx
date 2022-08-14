@@ -4,7 +4,7 @@ import { getMyCards, sortBy, getMyDecks, saveDeck, newDeck, editDeckName, delete
 import { Fancybox } from '@components'
 import apiConfig from '../../operations/config.json'
 import { withRouter, Link } from "react-router-dom";
-import Deckbox from './components/Deckbox.jsx'
+import { Deckbox } from "@components";
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 class DeckBuilder extends React.Component {

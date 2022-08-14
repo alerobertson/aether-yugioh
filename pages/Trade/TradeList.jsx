@@ -28,34 +28,19 @@ function TradeList(props) {
     getInfo();
   }, []);
 
-  const getInfo = () => {
+  const getInfo = async () => {
     let token = localStorage.getItem("token");
-    let promises = [];
 
-    let duelists, offers, me;
+    await getMe(token).then((response) => {
+      setMe(response);
+    });
 
-    promises.push(
-      getDuelists(token).then((response) => {
-        duelists = response;
-      })
-    );
-    // promises.push(getMyCards(token).then((response) => {
-    //     cards = response
-    // }))
-    promises.push(
-      getOffers(token).then((response) => {
-        offers = response.filter((offer) => offer.state == "open");
-      })
-    );
-    promises.push(
-      getMe(token).then((response) => {
-        me = response;
-      })
-    );
-    Promise.all(promises).then(() => {
-      setDuelists(duelists);
-      setOffers(offers);
-      setMe(me);
+    await getDuelists(token).then((response) => {
+      setDuelists(response);
+    });
+
+    await getOffers(token).then((response) => {
+      setOffers(response.filter((offer) => offer.state == "open"));
     });
   };
 
@@ -80,7 +65,14 @@ function TradeList(props) {
                 <Card.Title>{duelist.username}</Card.Title>
               </Card.Body>
               <Card.Footer>
-                <Button variant="primary" size="lg" style={{ width: "100%" }}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  style={{ width: "100%" }}
+                  onClick={() => {
+                    history.push(`/tradelist/new/${duelist.id}`);
+                  }}
+                >
                   Trade
                 </Button>
               </Card.Footer>

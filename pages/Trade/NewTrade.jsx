@@ -91,19 +91,33 @@ function ViewTrade(props) {
               className="mt-4"
               style={{ width: "100%", borderRadius: "0%" }}
             >
-              <Card.Header className="text-center">
-                <h1>New Trade</h1>
-              </Card.Header>
-              <Button
-                className="m-2"
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                  onSendOffer();
+              <Card.Header
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                Create
-              </Button>
+                <Button
+                  variant="info"
+                  size="lg"
+                  onClick={() => {
+                    history.push(`/tradelist`);
+                  }}
+                >
+                  Back
+                </Button>
+                <h1>New Trade</h1>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={() => {
+                    onSendOffer();
+                  }}
+                >
+                  Create
+                </Button>
+              </Card.Header>
               <Card.Body>
                 <Row>
                   <Col>

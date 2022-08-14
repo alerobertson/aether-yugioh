@@ -64,6 +64,23 @@ function ViewTrade(props) {
     return duelist.id == params.id;
   });
 
+  const onSendOffer = () => {
+    let token = localStorage.getItem("token");
+    sendOffer(token, {
+      offer: offer.owner.offer.map((card) => card.id),
+      partner: partner.id,
+      partner_offer: offer.target.offer.map((card) => card.id),
+    }).then(
+      (response) => {
+        console.log(response);
+        history.push(`/tradelist`);
+      },
+      (error) => {
+        alert("Something Went Wrong");
+      }
+    );
+  };
+
   if (!partner) return null;
   return (
     <main className="main page">
@@ -81,7 +98,9 @@ function ViewTrade(props) {
                 className="m-2"
                 variant="primary"
                 size="lg"
-                onClick={() => {}}
+                onClick={() => {
+                  onSendOffer();
+                }}
               >
                 Create
               </Button>
@@ -95,40 +114,45 @@ function ViewTrade(props) {
                       <Card.Header className="text-center">
                         <h1>You</h1>
                       </Card.Header>
-                      <Card.Body
-                        style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <div
-                          className="offer_box"
-                          style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {offer.owner.offer.map((card,index) => (
+                      <Card.Body>
+                        <div className="offer_box_v2">
+                          {offer.owner.offer.map((card, index) => (
                             <div
                               card_id={card.id}
                               card_code={card.code}
                               className={`card ${card.rarity}`}
                               key={index}
+                              onClick={() => {
+                                const cardIndex = offer.owner.offer
+                                  .map((item) => {
+                                    return item.id;
+                                  })
+                                  .indexOf(card.id);
+                                const temp_offer = { ...offer };
+                                const moveCard =
+                                  temp_offer.owner.offer[cardIndex];
+                                temp_offer.owner.offer.splice(cardIndex, 1);
+                                setOffer(temp_offer);
+                                setMyCards([...myCards, moveCard]);
+                              }}
                             >
                               <div className="card_effect"></div>
                               <img alt={card.name} src={card.image_url} />
                             </div>
                           ))}
                         </div>
-
                         <Deckbox
                           box_cards={myCards}
                           onMouseEnterhandler={() => {}}
                           onClickHandler={(card) => {
                             const temp_offer = { ...offer };
                             temp_offer.owner.offer.push(card);
+                            const cardIndex = myCards
+                              .map((item) => {
+                                return item.id;
+                              })
+                              .indexOf(card.id);
+                            myCards.splice(cardIndex, 1);
                             setOffer(temp_offer);
                           }}
                         />
@@ -143,20 +167,27 @@ function ViewTrade(props) {
                       <Card.Header className="text-center">
                         <h1>{partner.username}</h1>
                       </Card.Header>
-                      <Card.Body
-                        style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <div className="offer_box">
-                          {offer.target.offer.map((card,index) => (
+                      <Card.Body>
+                        <div className="offer_box_v2">
+                          {offer.target.offer.map((card, index) => (
                             <div
                               card_id={card.id}
                               card_code={card.code}
                               className={`card ${card.rarity}`}
                               key={index}
+                              onClick={() => {
+                                const cardIndex = offer.target.offer
+                                  .map((item) => {
+                                    return item.id;
+                                  })
+                                  .indexOf(card.id);
+                                const temp_offer = { ...offer };
+                                const moveCard =
+                                  temp_offer.target.offer[cardIndex];
+                                temp_offer.target.offer.splice(cardIndex, 1);
+                                setOffer(temp_offer);
+                                setPartnerCards([...partnerCards, moveCard]);
+                              }}
                             >
                               <div className="card_effect"></div>
                               <img alt={card.name} src={card.image_url} />
@@ -167,9 +198,14 @@ function ViewTrade(props) {
                           box_cards={partnerCards}
                           onMouseEnterhandler={() => {}}
                           onClickHandler={(card) => {
-                            console.log(card);
                             const temp_offer = { ...offer };
                             temp_offer.target.offer.push(card);
+                            const cardIndex = partnerCards
+                              .map((item) => {
+                                return item.id;
+                              })
+                              .indexOf(card.id);
+                            partnerCards.splice(cardIndex, 1);
                             setOffer(temp_offer);
                           }}
                         />

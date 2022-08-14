@@ -115,7 +115,7 @@ function ViewTrade(props) {
                             >
                               Cancel
                             </Button>
-                            <h1>{youTrader.user.username}</h1>
+                            <h1>You</h1>
                             <div></div>
                           </div>
                         )}
@@ -156,6 +156,7 @@ function ViewTrade(props) {
                           justifyContent: "center",
                         }}
                       >
+                        {youTrader.offer.length == 0 && "No Cards"}
                         {youTrader.offer.map((card) => {
                           return (
                             <div
@@ -187,6 +188,7 @@ function ViewTrade(props) {
                           justifyContent: "center",
                         }}
                       >
+                        {otherTrader.offer.length == 0 && "No Cards"}
                         {otherTrader.offer.map((card) => {
                           return (
                             <div

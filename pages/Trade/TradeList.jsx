@@ -92,6 +92,7 @@ function TradeList(props) {
           justifyContent: "center",
         }}
       >
+        {offers.length == 0 && "No Pending Trades"}
         {offers.map((offer) => {
           const otherTrader =
             offer.target.user.id == me.id
@@ -125,7 +126,6 @@ function TradeList(props) {
       </div>
     );
   };
-
   return (
     <main className="main page">
       <div className="main_container main_container--outer">

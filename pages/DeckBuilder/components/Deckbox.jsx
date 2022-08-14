@@ -23,6 +23,12 @@ function Deckbox(props) {
       //
       if (sortDir == "desc") {
         temp_boxCards = temp_boxCards.sort(function (a, b) {
+          return a["name"].toString().toLowerCase() >
+            b["name"].toString().toLowerCase()
+            ? -1
+            : 1;
+        });
+        temp_boxCards = temp_boxCards.sort(function (a, b) {
           return a[sortCat].toString().toLowerCase() >
             b[sortCat].toString().toLowerCase()
             ? -1
@@ -30,6 +36,12 @@ function Deckbox(props) {
         });
       }
       if (sortDir == "asc") {
+        temp_boxCards = temp_boxCards.sort(function (a, b) {
+          return a["name"].toString().toLowerCase() <
+            b["name"].toString().toLowerCase()
+            ? -1
+            : 1;
+        });
         temp_boxCards = temp_boxCards.sort(function (a, b) {
           return a[sortCat].toString().toLowerCase() <
             b[sortCat].toString().toLowerCase()
@@ -39,16 +51,20 @@ function Deckbox(props) {
       }
       setBoxCards(temp_boxCards);
     }
-  }, [box_cards, sortDir, sortCat, searchText]);
+  }, [box_cards, box_cards.length, sortDir, sortCat, searchText]);
 
   const box_card_template = boxCards.map((card) => {
     return (
       <div
-        onClick={onClickHandler}
+        onClick={() => {
+          onClickHandler(card);
+        }}
         card_id={card.id}
         card_code={card.code}
         card_monster_type={card.monster_type}
-        onMouseEnter={onMouseEnterhandler}
+        onMouseEnter={(event) => {
+          onMouseEnterhandler(event);
+        }}
         className={`card ${card.rarity}`}
         key={card.id.toString()}
       >
@@ -108,7 +124,7 @@ function Deckbox(props) {
           </div>
         </div>
         <div className="card-box flex flex--wrap">{box_card_template}</div>
-      </div>
+      </div>{" "}
     </>
   );
 }

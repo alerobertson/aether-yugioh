@@ -25,6 +25,8 @@
     "axios": "^0.23.0",
     "babel-loader": "^8.2.3",
     "beautify-html-webpack-plugin": "^1.0.3",
+    "bootstrap": "^5.2.0",
+    "react-bootstrap": "^2.5.0",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.4.0",
     "html-loader": "^3.0.0",

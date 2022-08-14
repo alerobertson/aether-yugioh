@@ -1,0 +1,45 @@
+.soldAnimation {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s .4s, opacity .4s linear;
+}
+.buyAnimation {
+    animation: pulse 0.25s infinite alternate;
+}
+.gemAnimation {
+    animation: gem-pulse 1s infinite alternate;
+}
+
+@keyframes gem-pulse {
+    from {
+        box-shadow: 0px 0px 2px 0px #82d2ff;
+    }
+    to {
+        box-shadow: 0px 0px 20px 6px #0151c1;
+    }
+}
+
+@keyframes pulse {
+    from {
+        box-shadow: 0px 0px 0px 0px #d4af37;
+    }
+    to {
+        box-shadow: 0px 0px 100px 10px #d4af37;
+    }
+}
+.gem-icon {
+    margin-right: 6px;
+    margin-left: 6px;
+    max-height: 32px;
+    max-width: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    color: white;
+}

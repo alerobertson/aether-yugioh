@@ -27,6 +27,14 @@ function ViewTrade(props) {
   const [duelists, setDuelists] = useState([]);
   const [myCards, setMyCards] = useState([]);
   const [partnerCards, setPartnerCards] = useState([]);
+  const [offer, setOffer] = useState({
+    owner: {
+      offer: [],
+    },
+    target: {
+      offer: [],
+    },
+  });
 
   const [me, setMe] = useState({});
 
@@ -94,9 +102,35 @@ function ViewTrade(props) {
                           justifyContent: "center",
                         }}
                       >
+                        <div
+                          className="offer_box"
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {offer.owner.offer.map((card,index) => (
+                            <div
+                              card_id={card.id}
+                              card_code={card.code}
+                              className={`card ${card.rarity}`}
+                              key={index}
+                            >
+                              <div className="card_effect"></div>
+                              <img alt={card.name} src={card.image_url} />
+                            </div>
+                          ))}
+                        </div>
+
                         <Deckbox
                           box_cards={myCards}
-                          onClickHandler={() => {}}
+                          onMouseEnterhandler={() => {}}
+                          onClickHandler={(card) => {
+                            const temp_offer = { ...offer };
+                            temp_offer.owner.offer.push(card);
+                            setOffer(temp_offer);
+                          }}
                         />
                       </Card.Body>
                     </Card>
@@ -116,9 +150,28 @@ function ViewTrade(props) {
                           justifyContent: "center",
                         }}
                       >
+                        <div className="offer_box">
+                          {offer.target.offer.map((card,index) => (
+                            <div
+                              card_id={card.id}
+                              card_code={card.code}
+                              className={`card ${card.rarity}`}
+                              key={index}
+                            >
+                              <div className="card_effect"></div>
+                              <img alt={card.name} src={card.image_url} />
+                            </div>
+                          ))}
+                        </div>
                         <Deckbox
                           box_cards={partnerCards}
-                          onClickHandler={() => {}}
+                          onMouseEnterhandler={() => {}}
+                          onClickHandler={(card) => {
+                            console.log(card);
+                            const temp_offer = { ...offer };
+                            temp_offer.target.offer.push(card);
+                            setOffer(temp_offer);
+                          }}
                         />
                       </Card.Body>
                     </Card>

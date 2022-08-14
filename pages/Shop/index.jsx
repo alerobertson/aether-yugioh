@@ -13,21 +13,24 @@ function Shop(props) {
     <main className="main page page--shop">
       <div className="main_container main_container--outer">
         <div className="main_container main_container--inner">
-          <Tabs defaultActiveKey="buy" id="fill-tab-example" className="my-3" fill>
+          <Tabs
+            defaultActiveKey="buy"
+            id="fill-tab-example"
+            className="my-3"
+            fill
+            style={{
+              backgroundColor: "rgba(128,128,128, 0.50)",
+              borderWidth: "2px",
+            }}
+          >
             <Tab eventKey="buy" title="Buy Cards">
-              <Container>
-                <Buy />
-              </Container>
+              <Buy />
             </Tab>
             <Tab eventKey="decks" title="Buy Decks">
-              <Container>
-                <Decks />
-              </Container>
+              <Decks />
             </Tab>
             <Tab eventKey="sell" title="Sell Cards">
-              <Container>
-                <Sell />
-              </Container>
+              <Sell />
             </Tab>
           </Tabs>
         </div>

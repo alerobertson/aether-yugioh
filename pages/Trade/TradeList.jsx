@@ -110,7 +110,7 @@ function TradeList(props) {
               </Card.Body>
               <Card.Footer>
                 <Button
-                  variant="primary"
+                  variant="info"
                   size="lg"
                   style={{ width: "100%" }}
                   onClick={() => {

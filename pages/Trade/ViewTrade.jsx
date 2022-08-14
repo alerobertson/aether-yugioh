@@ -4,7 +4,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+
 import "./style.scss";
 import {
   getDuelists,
@@ -19,6 +20,8 @@ import {
   cancelOffer,
 } from "@api-operations";
 function ViewTrade(props) {
+  const history = useHistory();
+
   const params = useParams();
 
   const [offer, setOffer] = useState([]);
@@ -46,9 +49,32 @@ function ViewTrade(props) {
       const offer = offers.find((offer) => {
         return offer.id == params.id;
       });
-
+      if (offer == undefined){
+        history.push(`/tradelist`);
+      }
       setMe(me);
       setOffer(offer);
+    });
+  };
+
+  const onCancelHandler = () => {
+    let token = localStorage.getItem("token");
+    cancelOffer(token, offer.id).then((response) => {
+      history.push(`/tradelist`);
+    });
+  };
+
+  const onAcceptHandler = () => {
+    let token = localStorage.getItem("token");
+    acceptOffer(token, offer.id).then((response) => {
+      history.push(`/tradelist`);
+    });
+  };
+
+  const onDeclineHandler = () => {
+    let token = localStorage.getItem("token");
+    declineOffer(token, offer.id).then((response) => {
+      history.push(`/tradelist`);
     });
   };
 
@@ -58,7 +84,6 @@ function ViewTrade(props) {
   const otherTrader =
     offer.target.user.id == me.id ? offer.owner : offer.target;
   const isYourTrade = offer.owner.user.id == me.id;
-  console.log(isYourTrade);
   return (
     <main className="main page">
       <div className="main_container main_container--outer">
@@ -87,7 +112,13 @@ function ViewTrade(props) {
                               alignItems: "center",
                             }}
                           >
-                            <Button variant="danger" size="lg">
+                            <Button
+                              variant="danger"
+                              size="lg"
+                              onClick={() => {
+                                onCancelHandler();
+                              }}
+                            >
                               Cancel
                             </Button>
                             <h1>{youTrader.user.username}</h1>
@@ -102,11 +133,23 @@ function ViewTrade(props) {
                               alignItems: "center",
                             }}
                           >
-                            <Button variant="danger" size="lg">
+                            <Button
+                              variant="danger"
+                              size="lg"
+                              onClick={() => {
+                                onDeclineHandler();
+                              }}
+                            >
                               Decline
                             </Button>
                             <h1>{youTrader.user.username}</h1>
-                            <Button variant="success" size="lg">
+                            <Button
+                              variant="success"
+                              size="lg"
+                              onClick={() => {
+                                onAcceptHandler();
+                              }}
+                            >
                               Accept
                             </Button>
                           </div>

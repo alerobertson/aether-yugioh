@@ -560,16 +560,14 @@ class DeckBuilder extends React.Component {
                   <Card.Body>
                     <Card.Title>Deck Stats</Card.Title>
                     <ListGroup variant="flush">
-                      <ListGroup.Item>
-                        Deck Size:{" "}
-                        {this.state.deck_cards.length +
-                          this.state.extra_cards.length}
+                      <ListGroup.Item style={{color:this.state.deck_cards.length + this.state.extra_cards.length > 75 ? "red" : "green"}}>
+                        Deck Size: {this.state.deck_cards.length + this.state.extra_cards.length} / 75
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        Main Size: {this.state.deck_cards.length}
+                      <ListGroup.Item  style={{color:this.state.extra_cards.length > 60 ? "red" : "green"}}>
+                        Main Size: {this.state.deck_cards.length} / 60
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        Extra Size: {this.state.extra_cards.length}
+                      <ListGroup.Item  style={{color:this.state.extra_cards.length > 15 ? "red" : "green"}}>
+                        Extra Size: {this.state.extra_cards.length} / 15
                       </ListGroup.Item>
                     </ListGroup>
                   </Card.Body>

@@ -216,7 +216,7 @@ function Sell(props) {
               setTimeout(() => {
                 setSoldFlag(false);
                 disenchant(selectedCard.id);
-              }, 1500);
+              }, 500);
             }}
           >
             <h4>

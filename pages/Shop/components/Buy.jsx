@@ -111,7 +111,10 @@ function Buy(props) {
   const renderCards = () => {
     return (
       <div className="px-0 mx-0">
-        <div className="p-5" style={{ backgroundColor: "rgba(255, 51, 51, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(255, 51, 51, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Secret Rare</h2>
           <div className="d-flex flex-wrap justify-content-start">
             {selectedSetCards.secret_rare.length == 0 && (
@@ -122,7 +125,10 @@ function Buy(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(255, 221, 46, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(255, 221, 46, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Ultra Rare</h2>{" "}
           <div className="d-flex  flex-wrap justify-content-start">
             {selectedSetCards.ultra_rare.length == 0 && (
@@ -134,7 +140,10 @@ function Buy(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(194, 69, 255, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(194, 69, 255, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Super Rare</h2>{" "}
           <div className="d-flex  flex-wrap justify-content-start">
             {selectedSetCards.super_rare.length == 0 && (
@@ -146,7 +155,10 @@ function Buy(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(69, 111, 255, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(69, 111, 255, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Rare</h2>{" "}
           <div className="d-flex  flex-wrap justify-content-start">
             {selectedSetCards.rare.length == 0 && (
@@ -158,7 +170,10 @@ function Buy(props) {
             })}
           </div>
         </div>
-        <div className="p-5" style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Common</h2>
           <div className="d-flex  flex-wrap justify-content-start">
             {selectedSetCards.common.length == 0 && (
@@ -229,9 +244,18 @@ function Buy(props) {
             }}
             className="my-4"
           >
-            <img className="gem-icon" src={gem_icon} />
-            {gems}
+            <span
+              className="p-4 gemAnimation"
+              style={{
+                backgroundColor: "rgba(128,128,128, 0.20)",
+                borderRadius: "12px",
+              }}
+            >
+              <img className="gem-icon mb-2" src={gem_icon} />
+              {gems}
+            </span>
           </span>
+
           <Form.Select
             style={{ minWidth: "100%" }}
             value={selectedSetName}

@@ -6,6 +6,19 @@
 .buyAnimation {
     animation: pulse 0.25s infinite alternate;
 }
+.gemAnimation {
+    animation: gem-pulse 1s infinite alternate;
+}
+
+@keyframes gem-pulse {
+    from {
+        box-shadow: 0px 0px 2px 0px #82d2ff;
+    }
+    to {
+        box-shadow: 0px 0px 20px 6px #0151c1;
+    }
+}
+
 @keyframes pulse {
     from {
         box-shadow: 0px 0px 0px 0px #d4af37;

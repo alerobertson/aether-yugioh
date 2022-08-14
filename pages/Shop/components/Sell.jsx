@@ -239,8 +239,16 @@ function Sell(props) {
             }}
             className="my-4"
           >
-            <img className="gem-icon" src={gem_icon} />
-            {gems}
+            <span
+              className="p-4 gemAnimation"
+              style={{
+                backgroundColor: "rgba(128,128,128, 0.20)",
+                borderRadius: "12px",
+              }}
+            >
+              <img className="gem-icon mb-2" src={gem_icon} />
+              {gems}
+            </span>
           </span>
           <div
             style={{

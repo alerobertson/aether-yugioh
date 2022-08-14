@@ -68,7 +68,10 @@ function Buy(props) {
   const renderDecks = () => {
     return (
       <div className="px-0 mx-0">
-        <div className="p-5" style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}>
+        <div
+          className="p-5"
+          style={{ backgroundColor: "rgba(128,128,128, 0.20)" }}
+        >
           <h2 className="text-center mb-3">Decks</h2>
           <div className="d-flex flex-wrap justify-content-center">
             {starterDecks.length == 0 && (
@@ -138,8 +141,16 @@ function Buy(props) {
             }}
             className="my-4"
           >
-            <img className="gem-icon" src={gem_icon} />
-            {gems}
+            <span
+              className="p-4 gemAnimation"
+              style={{
+                backgroundColor: "rgba(128,128,128, 0.20)",
+                borderRadius: "12px",
+              }}
+            >
+              <img className="gem-icon mb-2" src={gem_icon} />
+              {gems}
+            </span>
           </span>
         </Card.Header>
         <Card.Body>{renderDecks()}</Card.Body>

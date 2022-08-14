@@ -91,7 +91,7 @@ function Buy(props) {
         setSelectedCard(null);
         getInfo();
       } else {
-        console.log("Error");
+        alert.log("Error");
       }
     });
   };

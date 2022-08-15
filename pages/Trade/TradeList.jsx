@@ -72,7 +72,7 @@ function TradeList(props) {
                   size="lg"
                   style={{ width: "100%" }}
                   onClick={() => {
-                    history.push(`/tradelist/new/${duelist.id}`);
+                    history.push(`/trade/new/${duelist.id}`);
                   }}
                 >
                   Trade
@@ -118,7 +118,7 @@ function TradeList(props) {
                   size="lg"
                   style={{ width: "100%" }}
                   onClick={() => {
-                    history.push(`/tradelist/${offer.id}`);
+                    history.push(`/trade/${offer.id}`);
                   }}
                 >
                   View

@@ -28,16 +28,16 @@ class Page extends React.Component {
                 <Route path="/login">
                     <Login />
                 </Route>
-                <Route path="/trade">
+                <Route path="/trade-old">
                     <Trade />
                 </Route>
-                  <Route path="/tradelist/new/:id">
+                  <Route path="/trade/new/:id">
                     <NewTrade />
                 </Route>
-                <Route path="/tradelist/:id">
+                <Route path="/trade/:id">
                     <ViewTrade />
                 </Route>
-                <Route path="/tradelist">
+                <Route path="/trade">
                     <TradeList />
                 </Route>
 

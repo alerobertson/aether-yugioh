@@ -45,7 +45,7 @@ function ViewTrade(props) {
           return offer.id == params.id;
         });
       if (offer == undefined) {
-        history.push(`/tradelist`);
+        history.push(`/trade`);
       }
       setOffer(offer);
     });
@@ -54,21 +54,21 @@ function ViewTrade(props) {
   const onCancelHandler = () => {
     let token = localStorage.getItem("token");
     cancelOffer(token, offer.id).then((response) => {
-      history.push(`/tradelist`);
+      history.push(`/trade`);
     });
   };
 
   const onAcceptHandler = () => {
     let token = localStorage.getItem("token");
     acceptOffer(token, offer.id).then((response) => {
-      history.push(`/tradelist`);
+      history.push(`/trade`);
     });
   };
 
   const onDeclineHandler = () => {
     let token = localStorage.getItem("token");
     declineOffer(token, offer.id).then((response) => {
-      history.push(`/tradelist`);
+      history.push(`/trade`);
     });
   };
 
@@ -98,7 +98,7 @@ function ViewTrade(props) {
                   variant="info"
                   size="lg"
                   onClick={() => {
-                    history.push(`/tradelist`);
+                    history.push(`/trade`);
                   }}
                 >
                   Back

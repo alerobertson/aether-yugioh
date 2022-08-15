@@ -73,7 +73,7 @@ function ViewTrade(props) {
     }).then(
       (response) => {
         console.log(response);
-        history.push(`/tradelist`);
+        history.push(`/trade`);
       },
       (error) => {
         alert("Something Went Wrong");
@@ -102,7 +102,7 @@ function ViewTrade(props) {
                   variant="info"
                   size="lg"
                   onClick={() => {
-                    history.push(`/tradelist`);
+                    history.push(`/trade`);
                   }}
                 >
                   Back

@@ -18,7 +18,7 @@ import {
 } from "@api-operations";
 
 function Sell(props) {
-  const [onlyDuplicates, setOnlyDuplicates] = useState(false);
+  const [duplicateCount, setDuplicateCount] = useState(1);
   const [soldFlag, setSoldFlag] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [boxCards, setBoxCards] = useState({
@@ -83,11 +83,11 @@ function Sell(props) {
   };
 
   const renderCard = (card) => {
-    if (onlyDuplicates) {
+    if (duplicateCount > 1) {
       const duplicates = boxCards[card.rarity].filter((c_val) => {
         return c_val.code == card.code;
       });
-      if (duplicates.length == 1) {
+      if (duplicates.length < duplicateCount) {
         return null;
       }
     }
@@ -254,16 +254,21 @@ function Sell(props) {
             style={{
               display: "flex",
               justifyContent: "left",
+              alignItems: "center",
             }}
           >
-            <Form.Check
-              type="switch"
-              label="Only Duplicates"
-              checked={onlyDuplicates}
-              onChange={() => {
-                setOnlyDuplicates(!onlyDuplicates);
+            <span>Duplicate Count: </span>
+            <Form.Control
+              label="Count"
+              type="number"
+              className="mx-2"
+              min="1"
+              style={{ width: "50px" }}
+              value={duplicateCount}
+              onChange={(val) => {
+                setDuplicateCount(val.target.value);
               }}
-            />
+            ></Form.Control>
           </div>
         </Card.Header>
         <Card.Body>{renderCards()}</Card.Body>

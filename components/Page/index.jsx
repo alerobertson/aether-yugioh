@@ -1,12 +1,22 @@
-import React from 'react'
-import './style.scss'
-import { Authorized, Home, Login, SignOut, Box, DeckBuilder, Packs, Trade, Redeem, Craft, Shop } from '@pages';
+import React from "react";
+import "./style.scss";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+    Authorized,
+    Home,
+    Login,
+    SignOut,
+    Box,
+    DeckBuilder,
+    Packs,
+    Trade,
+    Redeem,
+    Craft,
+    Shop,
+    TradeList,
+    ViewTrade,
+    NewTrade,
+} from "@pages";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class Page extends React.Component {
     render() {
@@ -21,6 +31,16 @@ class Page extends React.Component {
                 <Route path="/trade">
                     <Trade />
                 </Route>
+                  <Route path="/tradelist/new/:id">
+                    <NewTrade />
+                </Route>
+                <Route path="/tradelist/:id">
+                    <ViewTrade />
+                </Route>
+                <Route path="/tradelist">
+                    <TradeList />
+                </Route>
+
                 <Route path="/authorized">
                     <Authorized />
                 </Route>
@@ -46,8 +66,8 @@ class Page extends React.Component {
                     <DeckBuilder />
                 </Route>
             </Switch>
-        )
+        );
     }
 }
 
-export default Page
+export default Page;

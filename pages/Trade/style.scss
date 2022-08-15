@@ -79,7 +79,7 @@
                         }
                     }
                     &.accept {
-                        background-color: #228B22;
+                        background-color: #228b22;
                         &:hover {
                             opacity: 0.8;
                         }
@@ -131,4 +131,17 @@
     .card {
         cursor: pointer;
     }
+}
+
+.offer_box_v2 {
+    padding: 12px;
+    margin-bottom: 12px;
+    overflow-y: scroll;
+    height: 450px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
 }

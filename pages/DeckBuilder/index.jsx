@@ -33,6 +33,8 @@ class DeckBuilder extends React.Component {
       deck_id: -1,
       decks: [],
       deck_name: "",
+      cards_to_side_deck: false,
+      side_deck_cards: []
     };
   }
 
@@ -69,34 +71,60 @@ class DeckBuilder extends React.Component {
     this.setState({ search: event.target.search });
   }
 
+  handleToSideDeckCheckboxChange(event) {
+    this.setState({
+      cards_to_side_deck: event.target.checked
+    })
+  }
+
   moveBoxCard(card_id, is_extra) {
     let box_cards = this.state.box_cards;
     let extra_cards = this.state.extra_cards;
     let deck_cards = this.state.deck_cards;
+    let side_deck_cards = this.state.side_deck_cards;
+    let to_side_deck = this.state.cards_to_side_deck;
 
     // Find this card in the box
     let index = box_cards.findIndex((c) => c.id == card_id);
     let card = box_cards[index];
 
-    if (card && deck_cards.length < 60 && !is_extra) {
-      box_cards.splice(index, 1);
-      deck_cards.push(card);
-
-      this.setState({
-        box_cards: box_cards,
-        deck_cards: deck_cards,
-      });
+    if (!card) {
+      return
     }
 
-    if (card && extra_cards.length < 15 && is_extra) {
-      box_cards.splice(index, 1);
-      extra_cards.push(card);
-
-      this.setState({
-        box_cards: box_cards,
-        extra_cards: extra_cards,
-      });
+    if (to_side_deck) {
+      if (side_deck_cards.length < 15) {
+        box_cards.splice(index, 1);
+        side_deck_cards.push(card);
+  
+        this.setState({
+          box_cards: box_cards,
+          side_deck_cards: side_deck_cards,
+        });
+      }
     }
+    else {
+      if (deck_cards.length < 60 && !is_extra) {
+        box_cards.splice(index, 1);
+        deck_cards.push(card);
+
+        this.setState({
+          box_cards: box_cards,
+          deck_cards: deck_cards,
+        });
+      }
+
+      if (extra_cards.length < 15 && is_extra) {
+        box_cards.splice(index, 1);
+        extra_cards.push(card);
+  
+        this.setState({
+          box_cards: box_cards,
+          extra_cards: extra_cards,
+        });
+      }
+    }
+
   }
 
   moveDeckCard(card_id) {
@@ -127,6 +155,22 @@ class DeckBuilder extends React.Component {
       this.setState({
         box_cards: box_cards,
         extra_cards: extra_cards,
+      });
+    }
+  }
+
+  moveSideDeckCard(card_id) {
+    let box_cards = this.state.box_cards;
+    let side_deck_cards = this.state.side_deck_cards;
+    let index = side_deck_cards.findIndex((c) => c.id == card_id);
+    let card = side_deck_cards[index];
+    if (card) {
+      side_deck_cards.splice(index, 1);
+      box_cards.push(card);
+
+      this.setState({
+        box_cards: box_cards,
+        side_deck_cards: side_deck_cards,
       });
     }
   }
@@ -166,6 +210,16 @@ class DeckBuilder extends React.Component {
     this.moveExtraDeckCard(card_id);
   }
 
+  onSideDeckCardClick(event) {
+    let deck_id = this.state.deck_id;
+    if (deck_id == -1 || deck_id == "old") {
+      return;
+    }
+    let card = event.target.closest(".card");
+    let card_id = card.getAttribute("card_id");
+    this.moveSideDeckCard(card_id);
+  }
+
   sortCards(cards) {
     cards = sortBy(cards, "name", this.state.sort_direction);
     return sortBy(cards, this.state.sort_type, this.state.sort_direction);
@@ -188,6 +242,7 @@ class DeckBuilder extends React.Component {
         let database_cards = JSON.parse(JSON.stringify(cards));
         let deck = [];
         let extra_deck = [];
+        let side_deck = [];
         let deck_name = "";
 
         if (decks.length > 0) {
@@ -216,7 +271,9 @@ class DeckBuilder extends React.Component {
             if (index < 0) {
               invalid_cards.push(deck_card);
             } else {
-              valid_cards.push(cards[index]);
+              let new_card = cards[index]
+              new_card.side = deck_card.side
+              valid_cards.push(new_card);
               cards.splice(index, 1);
             }
           }
@@ -232,20 +289,25 @@ class DeckBuilder extends React.Component {
             alert(alert_message);
           }
 
+          // filter out side deck cards
+          side_deck = deck.filter((card) => {
+            return card.side == 1;
+          })
+
           // filter out extra deck cards
           extra_deck = deck.filter((card) => {
             let is_extra = false;
             if (card.monster_type) {
               is_extra = card.monster_type.split("/").includes("Fusion");
             }
-            return is_extra;
+            return is_extra && !card.side;
           });
           deck = deck.filter((card) => {
             let is_extra = false;
             if (card.monster_type) {
               is_extra = card.monster_type.split("/").includes("Fusion");
             }
-            return !is_extra;
+            return !is_extra && !card.side;
           });
         } else {
           deck_id = -1;
@@ -273,12 +335,13 @@ class DeckBuilder extends React.Component {
           deck_id: deck_id,
           decks: decks,
           deck_name: deck_name,
+          side_deck_cards: side_deck
         });
       });
     });
   }
 
-  assembleDeckString(deck, extra_deck) {
+  assembleDeckString(deck, extra_deck, side_deck) {
     let deck_string = `#created by AetherBot`;
     deck_string += `\n#main`;
     deck.forEach((card) => {
@@ -289,13 +352,17 @@ class DeckBuilder extends React.Component {
       deck_string += `\n${card.ygopro_id}`;
     });
     deck_string += `\n!side`;
+    side_deck.forEach((card) => {
+      deck_string += `\n${card.ygopro_id}`;
+    });
     return deck_string;
   }
 
   exportDeck() {
     let deck = this.state.deck_cards;
     let extra_deck = this.state.extra_cards;
-    let deck_string = this.assembleDeckString(deck, extra_deck);
+    let side_deck = this.state.side_deck_cards;
+    let deck_string = this.assembleDeckString(deck, extra_deck, side_deck);
 
     const element = document.createElement("a");
     const file = new Blob([deck_string], { type: "text/plain" });
@@ -307,8 +374,8 @@ class DeckBuilder extends React.Component {
 
   saveDeck() {
     let token = localStorage.getItem("token");
-    let cards = this.state.deck_cards.concat(this.state.extra_cards);
-    saveDeck(token, this.state.deck_id, this.state.deck_name, cards).then(
+    let cards = [...this.state.deck_cards, ...this.state.extra_cards];
+    saveDeck(token, this.state.deck_id, this.state.deck_name, cards, this.state.side_deck_cards).then(
       (response) => {
         let deck = this.state.decks.find((d) => d.id == this.state.deck_id);
         if (deck) {
@@ -365,7 +432,9 @@ class DeckBuilder extends React.Component {
         if (index < 0) {
           invalid_cards.push(deck_card);
         } else {
-          valid_cards.push(cards[index]);
+          let new_card = cards[index]
+          new_card.side = deck_card.side
+          valid_cards.push(new_card);
           cards.splice(index, 1);
         }
       }
@@ -381,20 +450,24 @@ class DeckBuilder extends React.Component {
         alert(alert_message);
       }
 
+      let side_deck = deck.filter((card) => {
+        return card.side;
+      });
+
       // filter out extra deck cards
       let extra_deck = deck.filter((card) => {
         let is_extra = false;
         if (card.monster_type) {
           is_extra = card.monster_type.split("/").includes("Fusion");
         }
-        return is_extra;
+        return is_extra && !card.side;
       });
       deck = deck.filter((card) => {
         let is_extra = false;
         if (card.monster_type) {
           is_extra = card.monster_type.split("/").includes("Fusion");
         }
-        return !is_extra;
+        return !is_extra && !card.side;
       });
 
       this.setState({
@@ -403,6 +476,7 @@ class DeckBuilder extends React.Component {
         deck_cards: deck,
         extra_cards: extra_deck,
         box_cards: cards,
+        side_deck_cards: side_deck,
       });
     }
   }
@@ -473,6 +547,26 @@ class DeckBuilder extends React.Component {
     let extra_card_template = this.state.extra_cards.map((card) => (
       <div
         onClick={this.onExtraDeckCardClick.bind(this)}
+        card_id={card.id}
+        card_code={card.code}
+        onMouseEnter={this.onCardHover.bind(this)}
+        className={`card ${card.rarity}`}
+        key={card.id.toString()}
+      >
+        <div className="card_effect"></div>
+        <img
+          alt={card.name}
+          src={card.image_url}
+          loading="lazy"
+          width="76.8px"
+          height="112px"
+        />
+      </div>
+    ));
+
+    let side_deck_card_template = this.state.side_deck_cards.map((card) => (
+      <div
+        onClick={this.onSideDeckCardClick.bind(this)}
         card_id={card.id}
         card_code={card.code}
         onMouseEnter={this.onCardHover.bind(this)}
@@ -621,7 +715,7 @@ class DeckBuilder extends React.Component {
                   <Card.Body>
                     <Card.Title>Deck Stats</Card.Title>
                     <ListGroup variant="flush">
-                      <ListGroup.Item>
+                      {/* <ListGroup.Item>
                         Deck Size:{" "}
                         <span
                           style={{
@@ -637,9 +731,9 @@ class DeckBuilder extends React.Component {
                             this.state.extra_cards.length}
                         </span>{" "}
                         / 75
-                      </ListGroup.Item>
+                      </ListGroup.Item> */}
                       <ListGroup.Item>
-                        Main Size:{" "}
+                        Main Deck:{" "}
                         <span
                           style={{
                             color:
@@ -653,7 +747,7 @@ class DeckBuilder extends React.Component {
                         / 60
                       </ListGroup.Item>
                       <ListGroup.Item>
-                        Extra Size:{" "}
+                        Extra Deck:{" "}
                         <span
                           style={{
                             color:
@@ -666,9 +760,23 @@ class DeckBuilder extends React.Component {
                         </span>{" "}
                         / 15
                       </ListGroup.Item>
+                      <ListGroup.Item>
+                        Side Deck:{" "}
+                        <span
+                          style={{
+                            color:
+                              this.state.side_deck_cards.length > 15
+                                ? "red"
+                                : "green",
+                          }}
+                        >
+                          {this.state.side_deck_cards.length}
+                        </span>{" "}
+                        / 15
+                      </ListGroup.Item>
 
                       <ListGroup.Item>
-                        Banned Cards (Max 0): {BannedListCards()}
+                        Forbidden Cards: {BannedListCards()}
                       </ListGroup.Item>
                       <ListGroup.Item>
                         Limited Cards (Max 1): {LimitedListCards()}
@@ -712,6 +820,35 @@ class DeckBuilder extends React.Component {
                   </a>
                 )}
               </div>
+              <div
+                className="deck-box flex flex--wrap mx-2"
+                style={{
+                  backgroundColor: "rgba(250, 244, 211, 1)",
+                  padding: "6px",
+                  width: "800px",
+                  minHeight: "126px",
+                }}
+              >
+                {side_deck_card_template}
+              </div>
+              <input
+                type="checkbox"
+                id="side-deck"
+                name="Send Cards to Side Deck"
+                checked={this.state.cards_to_side_deck}
+                onChange={this.handleToSideDeckCheckboxChange.bind(this)}
+                style={{
+                  marginLeft: "10px",
+                  marginRight: "10px",
+                  width: "20px",
+                  display: "inline-block"
+                }}
+              />
+              <label
+                style={{
+                  marginTop: "5px"
+                }}
+              >Cards to Side Deck</label>
             </div>
             <Deckbox
               box_cards={this.state.box_cards}

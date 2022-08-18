@@ -217,7 +217,7 @@ export function newDeck(token, name) {
     })
 }
 
-export function saveDeck(token, deck_id, name, cards) {
+export function saveDeck(token, deck_id, name, cards, side_deck_cards) {
     let headers = {
         "auth_token": token
     }
@@ -225,14 +225,23 @@ export function saveDeck(token, deck_id, name, cards) {
     cards = cards.map(card => {
         return {
             code: card.code,
-            first_edition: card.first_edition
+            first_edition: card.first_edition,
+            side: false
+        }
+    })
+
+    side_deck_cards = side_deck_cards.map(card => {
+        return {
+            code: card.code,
+            first_edition: card.first_edition,
+            side: true
         }
     })
 
     let body = {
         deck_id: deck_id,
         name: name,
-        cards: cards
+        cards: [...cards, ...side_deck_cards],
     }
     return axios.post(config.api_endpoint + '/yugioh/save-deck/', body, { headers: headers }).then((response) => {
         return response.data

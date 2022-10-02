@@ -15,10 +15,22 @@ function Deckbox(props) {
       //
       temp_boxCards = temp_boxCards.filter((card) => {
         if (card[sortCat] == null) return false;
-        return card[sortCat]
-          .toString()
-          .toLowerCase()
-          .includes(searchText.toLowerCase());
+        if (
+          ["name", "type", "rarity_index", "spell_trap_type"].includes(sortCat)
+        ) {
+          return card[sortCat]
+            .toString()
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
+        }
+        if (
+          ["id", "rarity_index", "level", "attack", "defense"].includes(sortCat)
+        ) {
+          return card[sortCat]
+            .toString()
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
+        }
       });
       //
       if (sortDir == "desc") {
@@ -28,12 +40,23 @@ function Deckbox(props) {
             ? -1
             : 1;
         });
-        temp_boxCards = temp_boxCards.sort(function (a, b) {
-          return a[sortCat].toString().toLowerCase() >
-            b[sortCat].toString().toLowerCase()
-            ? -1
-            : 1;
-        });
+        if (
+          ["name", "type", "rarity_index", "spell_trap_type"].includes(sortCat)
+        ) {
+          temp_boxCards = temp_boxCards.sort(function (a, b) {
+            return a[sortCat].toString().toLowerCase() >
+              b[sortCat].toString().toLowerCase()
+              ? -1
+              : 1;
+          });
+        }
+        if (
+          ["id", "rarity_index", "level", "attack", "defense"].includes(sortCat)
+        ) {
+          temp_boxCards = temp_boxCards.sort(function (a, b) {
+            return a[sortCat] > b[sortCat] ? -1 : 1;
+          });
+        }
       }
       if (sortDir == "asc") {
         temp_boxCards = temp_boxCards.sort(function (a, b) {
@@ -42,12 +65,24 @@ function Deckbox(props) {
             ? -1
             : 1;
         });
-        temp_boxCards = temp_boxCards.sort(function (a, b) {
-          return a[sortCat].toString().toLowerCase() <
-            b[sortCat].toString().toLowerCase()
-            ? -1
-            : 1;
-        });
+        if (
+          ["name", "type", "rarity_index", "spell_trap_type"].includes(sortCat)
+        ) {
+          temp_boxCards = temp_boxCards.sort(function (a, b) {
+            return a[sortCat].toString().toLowerCase() <
+              b[sortCat].toString().toLowerCase()
+              ? -1
+              : 1;
+          });
+        }
+
+        if (
+          ["id", "rarity_index", "level", "attack", "defense"].includes(sortCat)
+        ) {
+          temp_boxCards = temp_boxCards.sort(function (a, b) {
+            return a[sortCat] < b[sortCat] ? -1 : 1;
+          });
+        }
       }
       setBoxCards(temp_boxCards);
     }

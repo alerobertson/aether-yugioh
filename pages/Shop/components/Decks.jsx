@@ -78,6 +78,7 @@ function Buy(props) {
               <Card.Text className="text-center">Nothing On Sale.</Card.Text>
             )}
             {starterDecks.map((deck) => {
+              if (deck.owned) return null
               return renderDeck(deck);
             })}
           </div>

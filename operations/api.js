@@ -16,7 +16,7 @@ function sanitizeCards(cards) {
         card.rarity_index = rarityIndex(card.rarity)
         card.attack = convertToInt(card.attack)
         card.defense = convertToInt(card.defense)
-        card.image_url = `${config.api_endpoint}/yugioh/card/${card.code}?fe=${card.first_edition}`
+        card.image_url = `${config.api_endpoint}/yugioh/card/${card.code}?fe=${card.first_edition}&le=${card.limited_edition}`
         return card
     })
 }
@@ -42,7 +42,7 @@ export function getMyCards(token) {
     }
     return axios.get(config.api_endpoint + '/yugioh/my-cards/', { headers: headers }).then((response) => {
         let cards = sanitizeCards(response.data)
-
+        console.log({cards})
         return cards
     })
 }
@@ -50,7 +50,6 @@ export function getMyCards(token) {
 export function getCards(user_id) {
     return axios.get(config.api_endpoint + '/yugioh/get-cards/' + user_id).then((response) => {
         let cards = sanitizeCards(response.data)
-
         return cards
     })
 }
@@ -226,6 +225,7 @@ export function saveDeck(token, deck_id, name, cards, side_deck_cards) {
         return {
             code: card.code,
             first_edition: card.first_edition,
+            limited_edition: card.limited_edition,
             side: false
         }
     })
@@ -234,6 +234,7 @@ export function saveDeck(token, deck_id, name, cards, side_deck_cards) {
         return {
             code: card.code,
             first_edition: card.first_edition,
+            limited_edition: card.limited_edition,
             side: true
         }
     })

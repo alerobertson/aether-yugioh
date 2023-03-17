@@ -7,8 +7,23 @@ import Container from "react-bootstrap/Container";
 import Buy from "./components/Buy.jsx";
 import Sell from "./components/Sell.jsx";
 import Decks from "./components/Decks.jsx";
-
+import {
+  getMe
+} from "@api-operations";
 function Shop(props) {
+ const [gems, setGems] = useState(0);
+
+  const getInfoGems = () => {
+    let token = localStorage.getItem("token");
+    getMe(token).then((me) => {
+          setGems(me.gems);
+    });
+  };
+
+  useEffect(() => {
+    getInfoGems();
+  }, []);
+
   return (
     <main className="main page page--shop">
       <div className="main_container main_container--outer">
@@ -24,13 +39,13 @@ function Shop(props) {
             }}
           >
             <Tab eventKey="buy" title="Buy Cards">
-              <Buy />
+              <Buy  gems={gems} getGems={getInfoGems} />
             </Tab>
             <Tab eventKey="decks" title="Buy Decks">
-              <Decks />
+              <Decks  gems={gems} getGems={getInfoGems}/>
             </Tab>
             <Tab eventKey="sell" title="Sell Cards">
-              <Sell />
+              <Sell  gems={gems} getGems={getInfoGems}/>
             </Tab>
           </Tabs>
         </div>

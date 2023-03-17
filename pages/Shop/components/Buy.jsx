@@ -13,7 +13,6 @@ import {
   enchantCard,
   getMyCards,
   sortBy,
-  getMe,
   getCardSets,
   getStarterDecks,
   purchaseDeck,
@@ -21,7 +20,6 @@ import {
 function Buy(props) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [buyFlag, setBuyFlag] = useState(false);
-  const [gems, setGems] = useState(0);
   const [selectedSetName, setSelectedSetName] = useState();
   const [selectedSetCards, setSelectedSetCards] = useState({
     common: [],
@@ -38,29 +36,19 @@ function Buy(props) {
 
   const getInfo = () => {
     let token = localStorage.getItem("token");
-    getMe(token).then((me) => {
-      getCardSets().then((sets_data) => {
-        let temp_sets_data = sets_data.filter((set) => set.craftable == true);
-        if (temp_sets_data) {
-          temp_sets_data = temp_sets_data.map((set) => {
-            let cards = sortRarity(set.cards);
-            set.cards = cards;
-            return set;
-          });
-          setSets(temp_sets_data);
-          setGems(me.gems);
-          if (temp_sets_data.length > 0) {
-            setSelectedSetName(temp_sets_data[0].set_name);
-          }
+    getCardSets().then((sets_data) => {
+      let temp_sets_data = sets_data.filter((set) => set.craftable == true);
+      if (temp_sets_data) {
+        temp_sets_data = temp_sets_data.map((set) => {
+          let cards = sortRarity(set.cards);
+          set.cards = cards;
+          return set;
+        });
+        setSets(temp_sets_data);
+        if (temp_sets_data.length > 0) {
+          setSelectedSetName(temp_sets_data[0].set_name);
         }
-      });
-    });
-  };
-
-    const getInfoGems = () => {
-    let token = localStorage.getItem("token");
-    getMe(token).then((me) => {
-          setGems(me.gems);
+      }
     });
   };
 
@@ -96,7 +84,7 @@ function Buy(props) {
       if (success) {
         console.log("Bought");
         setSelectedCard(null);
-        getInfoGems();
+        props.getGems();
       } else {
         alert.log("Error");
       }
@@ -259,7 +247,7 @@ function Buy(props) {
               }}
             >
               <img className="gem-icon mb-2" src={gem_icon} />
-              {gems}
+              {props.gems}
             </span>
           </span>
 

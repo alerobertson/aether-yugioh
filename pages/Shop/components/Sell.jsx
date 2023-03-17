@@ -11,7 +11,6 @@ import {
   enchantCard,
   getMyCards,
   sortBy,
-  getMe,
   getCardSets,
   getStarterDecks,
   purchaseDeck,
@@ -28,7 +27,6 @@ function Sell(props) {
     ultra_rare: [],
     secret_rare: [],
   });
-  const [gems, setGems] = useState(0);
 
   useEffect(() => {
     getInfo();
@@ -38,8 +36,6 @@ function Sell(props) {
     let token = localStorage.getItem("token");
     getMyCards(token).then((cards) => {
       let cards_by_rarity = sortRarity(cards);
-
-      getMe(token).then((me) => {
         setBoxCards({
           common: cards_by_rarity.common,
           rare: cards_by_rarity.rare,
@@ -47,9 +43,7 @@ function Sell(props) {
           ultra_rare: cards_by_rarity.ultra_rare,
           secret_rare: cards_by_rarity.secret_rare,
         });
-        setGems(me.gems);
       });
-    });
   };
 
   const disenchant = (card_id) => {
@@ -59,6 +53,7 @@ function Sell(props) {
         console.log("Sold");
         setSelectedCard(null);
         getInfo();
+        props.getGems()
       } else {
         console.log("Error");
       }
@@ -247,7 +242,7 @@ function Sell(props) {
               }}
             >
               <img className="gem-icon mb-2" src={gem_icon} />
-              {gems}
+              {props.gems}
             </span>
           </span>
           <div

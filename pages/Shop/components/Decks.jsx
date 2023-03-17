@@ -13,7 +13,6 @@ import {
   enchantCard,
   getMyCards,
   sortBy,
-  getMe,
   getCardSets,
   getStarterDecks,
   purchaseDeck,
@@ -22,7 +21,6 @@ function Buy(props) {
   const [starterDecks, setStarterDecks] = useState([]);
   const [selectedDeck, setSelectedDeck] = useState(null);
   const [buyFlag, setBuyFlag] = useState(false);
-  const [gems, setGems] = useState(0);
 
   useEffect(() => {
     getInfo();
@@ -30,11 +28,8 @@ function Buy(props) {
 
   const getInfo = () => {
     let token = localStorage.getItem("token");
-    getMe(token).then((me) => {
-      getStarterDecks(token).then((starter_decks_data) => {
-        setStarterDecks(starter_decks_data);
-        setGems(me.gems);
-      });
+    getStarterDecks(token).then((starter_decks_data) => {
+      setStarterDecks(starter_decks_data);
     });
   };
 
@@ -45,6 +40,7 @@ function Buy(props) {
         console.log("Bought");
         setSelectedDeck(null);
         getInfo();
+        props.getGems()
       } else {
         console.log("Error");
       }
@@ -150,7 +146,7 @@ function Buy(props) {
               }}
             >
               <img className="gem-icon mb-2" src={gem_icon} />
-              {gems}
+              {props.gems}
             </span>
           </span>
         </Card.Header>

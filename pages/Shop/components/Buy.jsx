@@ -57,6 +57,13 @@ function Buy(props) {
     });
   };
 
+    const getInfoGems = () => {
+    let token = localStorage.getItem("token");
+    getMe(token).then((me) => {
+          setGems(me.gems);
+    });
+  };
+
   useEffect(() => {
     const temp_set = sets.find((set) => {
       return set.set_name == selectedSetName;
@@ -89,7 +96,7 @@ function Buy(props) {
       if (success) {
         console.log("Bought");
         setSelectedCard(null);
-        getInfo();
+        getInfoGems();
       } else {
         alert.log("Error");
       }
